@@ -4,7 +4,7 @@ Microsoft Lab Environment
  - InstallHyperV.ps1
  
 .What calls this script?
- - This is a PowerShell DSC run as a Custom Script extention called by Host.json
+ - This is a PowerShell DSC run as a Custom Script extention called by VMdeploy.json
 
 .What does this script do?  
  - Downloads NuGet package provider
