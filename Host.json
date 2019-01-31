@@ -26,10 +26,10 @@
     "HyperVHost-PUBIPName": "[concat(variables('HyperVHostName'), '-PIP')]",
     "HyperVHostConfigArchiveFolder": ".",
     "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
-    "HyperVHostConfigURL": "https://sarahlabfiles.blob.core.windows.net/hypervhostconfig/HyperVHostConfig.zip",
+    "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/HyperVHostConfig.zip",
     "HyperVHostInstallHyperVScriptFolder": ".",
     "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
-    "HyperVHostInstallHyperVURL": "https://raw.githubusercontent.com/solliancenet/bcdr/master/CustomScripts/InstallHyperV.ps1"
+    "HyperVHostInstallHyperVURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/InstallHyperV.ps1"
 
   },
   "resources": [
