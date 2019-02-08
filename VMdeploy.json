@@ -13,7 +13,7 @@
     "OnPremVNETSubnet1Name": "VMHOST",
     "OnPremVNETSubnet1Prefix": "10.0.0.0/24",
     "HyperVHostName": "HYPERVHOST",
-    "HyperVHostAdminUserName": "admin",
+    "HyperVHostAdminUserName": "rootadmin",
     "HyperVHostAdminPassword": "pass@123demo",
     "HyperVHostImagePublisher": "MicrosoftWindowsServer",
     "HyperVHostImageOffer": "WindowsServer",
