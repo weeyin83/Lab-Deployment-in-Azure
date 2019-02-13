@@ -18,195 +18,196 @@
       "minLength": 1
     }
   },
-    "variables": {
-      "OnPremVNETPrefix": "10.0.0.0/16",
-      "OnPremVNETSubnet1Name": "VMHOST",
-      "OnPremVNETSubnet1Prefix": "10.0.0.0/24",
-      "HyperVHostName": "HYPERVHOST",
-      "HyperVHostAdminUserName": "rootadmin",
-      "HyperVHostImageOffer": "WindowsServer",
-      "HyperVHostWindowsOSVersion": "2016-Datacenter",
-      "HyperVHostOSDiskName": "[concat(variables('HyperVHostName'), '-OSDISK')]",
-      "HyperVHostVmSize": "Standard_D4s_v3",
-      "HyperVHostVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
-      "HyperVHostSubnetRef": "[concat(variables('HyperVHostVnetID'), '/subnets/', variables('OnPremVNETSubnet1Name'))]",
-      "HyperVHostNicName": "[concat(variables('HyperVHostName'), '-NIC')]",
-      "HyperVHost-PUBIPName": "[concat(variables('HyperVHostName'), '-PIP')]",
-      "HyperVHostConfigArchiveFolder": ".",
-      "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
-      "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/HyperVHostConfig.zip",
-      "HyperVHostInstallHyperVScriptFolder": ".",
-      "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
-      "HyperVHostInstallHyperVURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/InstallHyperV.ps1"
+  "variables": {
+    "OnPremVNETPrefix": "10.0.0.0/16",
+    "OnPremVNETSubnet1Name": "VMHOST",
+    "OnPremVNETSubnet1Prefix": "10.0.0.0/24",
+    "HyperVHostName": "HYPERVHOST",
+    "HyperVHostImagePublisher": "MicrosoftWindowsServer",
+    "HyperVHostImageOffer": "WindowsServer",
+    "HyperVHostWindowsOSVersion": "2016-Datacenter",
+    "HyperVHostOSDiskName": "[concat(variables('HyperVHostName'), '-OSDISK')]",
+    "HyperVHostVmSize": "Standard_D4s_v3",
+    "HyperVHostVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
+    "HyperVHostSubnetRef": "[concat(variables('HyperVHostVnetID'), '/subnets/', variables('OnPremVNETSubnet1Name'))]",
+    "HyperVHostNicName": "[concat(variables('HyperVHostName'), '-NIC')]",
+    "HyperVHost-PUBIPName": "[concat(variables('HyperVHostName'), '-PIP')]",
+    "HyperVHostConfigArchiveFolder": ".",
+    "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
+    "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
+    "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/HyperVHostConfig.zip",
+    "HyperVHostInstallHyperVScriptFolder": ".",
+    "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
+    "HyperVHostInstallHyperVURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/InstallHyperV.ps1"
 
+  },
+  "resources": [
+    {
+      "name": "OnPremVNET",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2018-12-01",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "OnPremVNET"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('OnPremVNETPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('OnPremVNETSubnet1Name')]",
+            "properties": {
+              "addressPrefix": "[variables('OnPremVNETSubnet1Prefix')]"
+            }
+          }
+        ]
+      }
     },
-    "resources": [
-      {
-        "name": "OnPremVNET",
-        "type": "Microsoft.Network/virtualNetworks",
-        "location": "[resourceGroup().location]",
-        "apiVersion": "2018-12-01",
-        "dependsOn": [],
-        "tags": {
-          "displayName": "OnPremVNET"
-        },
-        "properties": {
-          "addressSpace": {
-            "addressPrefixes": [
-              "[variables('OnPremVNETPrefix')]"
-            ]
-          },
-          "subnets": [
-            {
-              "name": "[variables('OnPremVNETSubnet1Name')]",
-              "properties": {
-                "addressPrefix": "[variables('OnPremVNETSubnet1Prefix')]"
-              }
-            }
-          ]
-        }
+    {
+      "name": "[variables('HyperVHost-PUBIPName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2018-12-01",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "HyperVHost-PUBIP"
       },
-      {
-        "name": "[variables('HyperVHost-PUBIPName')]",
-        "type": "Microsoft.Network/publicIPAddresses",
-        "location": "[resourceGroup().location]",
-        "apiVersion": "2018-12-01",
-        "dependsOn": [],
-        "tags": {
-          "displayName": "HyperVHost-PUBIP"
-        },
-        "properties": {
-          "publicIPAllocationMethod": "Dynamic",
-          "dnsSettings": {
-            "domainNameLabel": "[parameters('hypervHostDnsName')]"
-          }
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('hypervHostDnsName')]"
         }
+      }
+    },
+    {
+      "name": "[variables('HyperVHostNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2018-12-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
+      ],
+      "tags": {
+        "displayName": "HyperVHostNic"
       },
-      {
-        "name": "[variables('HyperVHostNicName')]",
-        "type": "Microsoft.Network/networkInterfaces",
-        "location": "[resourceGroup().location]",
-        "apiVersion": "2018-12-01",
-        "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
-          "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
-        ],
-        "tags": {
-          "displayName": "HyperVHostNic"
-        },
-        "properties": {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "Dynamic",
-                "subnet": {
-                  "id": "[variables('HyperVHostSubnetRef')]"
-                },
-                "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
-                }
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "[variables('HyperVHostName')]",
-        "type": "Microsoft.Compute/virtualMachines",
-        "location": "[resourceGroup().location]",
-        "apiVersion": "2018-10-01",
-        "dependsOn": [
-          "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
-        ],
-        "tags": {
-          "displayName": "HyperVHost"
-        },
-        "properties": {
-          "hardwareProfile": {
-            "vmSize": "[variables('HyperVHostVmSize')]"
-          },
-          "osProfile": {
-            "computerName": "[variables('HyperVHostName')]",
-            "adminUsername": "[parameters('HyperVHostAdminUsername')]",
-            "adminPassword": "[parameters('HyperVHostAdminPassword')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "[variables('HyperVHostImagePublisher')]",
-              "offer": "[variables('HyperVHostImageOffer')]",
-              "sku": "[variables('HyperVHostWindowsOSVersion')]",
-              "version": "latest"
-            },
-            "osDisk": {
-              "createOption": "FromImage",
-              "diskSizeGB": 500
-            }
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
-              }
-            ]
-          }
-        },
-        "resources": [
+      "properties": {
+        "ipConfigurations": [
           {
-            "name": "InstallHyperV",
-            "type": "extensions",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2017-12-01",
-            "dependsOn": [
-              "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
-            ],
-            "tags": {
-              "displayName": "Install Hyper-V"
-            },
+            "name": "ipconfig1",
             "properties": {
-              "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
-              "typeHandlerVersion": "1.4",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                  "[variables('HyperVHostInstallHyperVURL')]"
-                ],
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('HyperVHostInstallHyperVScriptFolder'), '/', variables('HyperVHostInstallHyperVScriptFileName'))]"
-              }
-            }
-          },
-          {
-            "name": "HyperVHostConfig",
-            "type": "extensions",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2017-12-01",
-            "dependsOn": [
-              "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
-              "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
-            ],
-            "tags": {
-              "displayName": "HyperVHostConfig"
-            },
-            "properties": {
-              "publisher": "Microsoft.Powershell",
-              "type": "DSC",
-              "typeHandlerVersion": "2.9",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "configuration": {
-                  "url": "[concat(variables('HyperVHostConfigURL'))]",
-                  "script": "HyperVHostConfig.ps1",
-                  "function": "Main"
-                },
-                "configurationArguments": {
-                  "nodeName": "[variables('HyperVHostName')]"
-                }
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('HyperVHostSubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
               }
             }
           }
         ]
       }
-    ],
-    "outputs": {}
-  }
+    },
+    {
+      "name": "[variables('HyperVHostName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2018-10-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
+      ],
+      "tags": {
+        "displayName": "HyperVHost"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('HyperVHostVmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('HyperVHostName')]",
+          "adminUsername": "[parameters('HyperVHostAdminUsername')]",
+          "adminPassword": "[parameters('HyperVHostAdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('HyperVHostImagePublisher')]",
+            "offer": "[variables('HyperVHostImageOffer')]",
+            "sku": "[variables('HyperVHostWindowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "diskSizeGB": 500
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "name": "InstallHyperV",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2017-12-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
+          ],
+          "tags": {
+            "displayName": "Install Hyper-V"
+          },
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[variables('HyperVHostInstallHyperVURL')]"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('HyperVHostInstallHyperVScriptFolder'), '/', variables('HyperVHostInstallHyperVScriptFileName'))]"
+            }
+          }
+        },
+        {
+          "name": "HyperVHostConfig",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2017-12-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
+            "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
+          ],
+          "tags": {
+            "displayName": "HyperVHostConfig"
+          },
+          "properties": {
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.9",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "configuration": {
+                "url": "[concat(variables('HyperVHostConfigURL'))]",
+                "script": "HyperVHostConfig.ps1",
+                "function": "Main"
+              },
+              "configurationArguments": {
+                "nodeName": "[variables('HyperVHostName')]"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {}
+}
