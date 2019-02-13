@@ -38,8 +38,7 @@
     "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/HyperVHostConfig.zip",
     "HyperVHostInstallHyperVScriptFolder": ".",
     "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
-    "HyperVHostInstallHyperVURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/InstallHyperV.ps1"
-
+    "HyperVHostInstallHyperVURL": "https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/master/InstallHyperV.ps1",
   },
   "resources": [
     {
