@@ -10,6 +10,13 @@ Within this repo are sample files for my Lab Deployments in Azure blog post - ht
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fweeyin83%2FLab-Deployment-in-Azure%2Fmaster%2FVMdeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+ 
+
+Once deployed the credentials for the servers are: 
+
+**Username**: mcwadmin
+**Password**: demo@pass123
+
 
 ## Credits
 Written by: Sarah Lean
