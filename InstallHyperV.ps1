@@ -17,6 +17,12 @@ Microsoft Lab Environment
 
 Set-ExecutionPolicy Unrestricted -Force
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Register-PSRepository -Default
+if (Get-Module -Name Az -ListAvailable) {
+    Write-Warning -Message 'Azure module not installed.'
+} else {
+    Install-Module -Name Az -AllowClobber -Scope AllUsers
+}
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
 Find-Module -Includes DscResource -Name xHyper-v | Install-Module -Force
 
