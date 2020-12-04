@@ -16,7 +16,7 @@ Microsoft Lab Environment
 #>
 
 Set-ExecutionPolicy Unrestricted -Force
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
 Find-Module -Includes DscResource -Name xHyper-v | Install-Module -Force
 
 #Install Hyper-V and Reboot
