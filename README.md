@@ -3,7 +3,7 @@
 Within this repo are sample files for my Lab Deployments in Azure blog post - https://www.techielass.com/lab-deployment-in-azure
 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fweeyin83%2FLab-Deployment-in-Azure%2Fmaster%2FVMdeploy.json" target="_blank">
+<a href="https://portal.azure.com/?WT.mc_id=modops-0000-salean#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fweeyin83%2FLab-Deployment-in-Azure%2Fmaster%2FVMdeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
