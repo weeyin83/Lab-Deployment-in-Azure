@@ -27,7 +27,7 @@
     "HyperVHostImageOffer": "WindowsServer",
     "HyperVHostWindowsOSVersion": "2019-Datacenter",
     "HyperVHostOSDiskName": "[concat(variables('HyperVHostName'), '-OSDISK')]",
-    "HyperVHostVmSize": "Standard_E4s_v4",
+    "HyperVHostVmSize": "Standard_E4s_v3",
     "HyperVHostVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
     "HyperVHostSubnetRef": "[concat(variables('HyperVHostVnetID'), '/subnets/', variables('OnPremVNETSubnet1Name'))]",
     "HyperVHostNicName": "[concat(variables('HyperVHostName'), '-NIC')]",
@@ -47,7 +47,7 @@
       "apiVersion": "2018-12-01",
       "dependsOn": [],
       "tags": {
-        "displayName": "LabDeployment"
+        "Purpose": "LabDeployment"
       },
       "properties": {
         "addressSpace": {
@@ -72,7 +72,7 @@
       "apiVersion": "2018-12-01",
       "dependsOn": [],
       "tags": {
-        "displayName": "LabDeployment"
+        "Purpose": "LabDeployment"
       },
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
@@ -91,7 +91,7 @@
         "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
       ],
       "tags": {
-        "displayName": "LabDeployment"
+        "Purpose": "LabDeployment"
       },
       "properties": {
         "ipConfigurations": [
@@ -119,7 +119,7 @@
         "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
       ],
       "tags": {
-        "displayName": "LabDeployment"
+        "Purpose": "LabDeployment"
       },
       "properties": {
         "hardwareProfile": {
