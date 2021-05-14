@@ -17,31 +17,31 @@ The ARM template will deploy a virtual machine within Azure and then install Hyp
 Once the servers are deployed you need to carry out the following configuration within the servers manually: 
 
 - Log into AD01 and set the server to have a static IP configuration as follows: 
-IP Address: 192.168.2.10
-Subnet Mask: 255.255.255.0
-Default Gateway: 192.168.2.1
-Preferred DNS: 127.0.0.1
-Alternative DNS: 1.1.1.1
+    - IP Address: 192.168.2.10
+    - Subnet Mask: 255.255.255.0
+    - Default Gateway: 192.168.2.1
+    - Preferred DNS: 127.0.0.1
+    - Alternative DNS: 1.1.1.1
 
 - Log into FS01 and set the server to have a static IP configuration as follows:
-IP Address: 192.168.2.11
-Subnet Mask: 255.255.255.0
-Default Gateway: 192.168.2.1
-Preferred DNS: 192.168.2.10
-Alternative DNS: 1.1.1.1
+    - IP Address: 192.168.2.11
+    - Subnet Mask: 255.255.255.0
+    - Default Gateway: 192.168.2.1
+    - Preferred DNS: 192.168.2.10
+    - Alternative DNS: 1.1.1.1
 
 - Log into SQL01 and set the server to have a static IP configuration as follows:
-IP Address: 192.168.2.13
-Subnet Mask: 255.255.255.0
-Default Gateway: 192.168.2.1
-Preferred DNS: 192.168.2.10
-Alternative DNS: 1.1.1.1
+    - IP Address: 192.168.2.13
+    - Subnet Mask: 255.255.255.0
+    - Default Gateway: 192.168.2.1
+    - Preferred DNS: 192.168.2.10
+    - Alternative DNS: 1.1.1.1
 
 - Within WEB01 run the following commands:
-sudo apt-get update
-sudo apt-get upgrade  
-sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
-sudo apt-get install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial -y 
+    - sudo apt-get update
+    - sudo apt-get upgrade  
+    - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
+    - sudo apt-get install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial -y 
 
 Once deployed the credentials for the servers are: 
 
