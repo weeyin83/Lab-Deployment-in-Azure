@@ -10,7 +10,7 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
  
-## Setup
+## Setup - IP Configuration
 
 The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy three servers onto that Hyper-V environment. 
 
@@ -43,10 +43,16 @@ Once the servers are deployed you need to carry out the following configuration 
     - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
     - sudo apt-get install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial -y 
 
+## Setup - VM Credentials
+
 Once deployed the credentials for the servers are: 
 
 **Username**: mcwadmin
 **Password**: demo@pass123
+
+## Setup - Windows Updates
+
+The VMs that are deployed during this lab environment were patched in May 2021, if you are deploying after this time and you want to get your system up to date there is a script on each VM that you can use to do that, C:\Scripts\patches.ps1 will install a PowerShell module and then check for updates that are missing and install them.  You can run this script and let it run while you carry out other tasks. 
 
 
 ## Credits
