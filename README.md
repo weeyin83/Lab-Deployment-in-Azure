@@ -22,7 +22,7 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 |  FS01 | Windows Server 2012 R2   | File Server   |   
 | SQL01  | Windows Server 2016   | SQL Server  |  
 | WEB01  | Windows Server 2016   |??  |   
-| WEB02  | Windows Server ??   | ?? |   
+| WEB02  | Ubuntu Server 22.04.2   | ?? |   
 
 The servers were last patched on the 7th March 2023. 
  
