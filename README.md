@@ -14,6 +14,8 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
 
 The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy five servers onto that Hyper-V environment. 
 
+The servers are all joined to the domain **tailwindtraders.org**. The login name for the admin of the domain is **tailwindtraders\administrator** and the password is: **Password**: demo@pass123
+
 |  VM Name  | Operating System   | Purpose   |  
 |---|---|---|
 |  AD01 |  Windows Server 2008 R2 | Domain Controller   |  
@@ -60,12 +62,14 @@ Once the servers are deployed you need to carry out the following configuration 
     - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
     - sudo apt-get install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial -y 
 
-## Setup - VM Credentials
+## Setup - Azure VM Host Credentials
 
-Once deployed the credentials for the servers are: 
+To log onto the Azure VM the credentials are: 
 
 **Username**: mcwadmin
 **Password**: demo@pass123
+
+_It is recommend that you chance this._
 
 ## Setup - Windows Updates
 
