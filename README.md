@@ -23,6 +23,8 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 | SQL01  | Windows Server 2016   | SQL Server  |  
 | WEB01  | Windows Server 2016   |??  |   
 | WEB02  | Windows Server ??   | ?? |   
+
+The servers were last patched on the 7th March 2023. 
  
 ## Setup - IP Configuration
 
@@ -56,7 +58,7 @@ Once the servers are deployed you need to carry out the following configuration 
     - Preferred DNS: 127.0.0.1
     - Alternative DNS: 8.8.8.8
     
-- Within WEB02 run the followign commands:
+- Within WEB02 run the following commands:
     - sudo apt-get update
     - sudo apt-get upgrade  
     - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
