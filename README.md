@@ -18,13 +18,23 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 
 |  VM Name  | Operating System   | Purpose   |  
 |---|---|---|
-|  AD01 |  Windows Server 2008 R2 | Domain Controller   |  
+|  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  
 |  FS01 | Windows Server 2012 R2   | File Server   |   
 | SQL01  | Windows Server 2016   | SQL Server  |  
-| WEB01  | Windows Server 2016   |??  |   
+| WEB01  | Windows Server 2016   | Web front end server  |   
 | WEB02  | Ubuntu Server 22.04.2   | ?? |   
 
 The servers were last patched on the 7th March 2023. 
+
+The AD01 server is the domain controller, DHCP and DNS server.  It should give out IP addresses to the servers when imported, but if you have any issues there are details on how to set static IPs to them below. 
+
+The FS01 server is a file server.  It has the file server role installed on it, it also has the FIle Server Resource Manager (FSRM) installed.  It's not an ideal setup as the files are all stored within the C drive but, there are files can you can use it to assess with Azure Migrate or look to set up an Azure File sync demo. 
+
+SQL01 is the database server, it has the SQL server role installed and the SQL server management tools installed. 
+
+WEB01 is an IIS Server. 
+
+WEB02 is a Ubuntu server, and has ****..... 
  
 ## Setup - IP Configuration
 
@@ -55,7 +65,7 @@ Once the servers are deployed you need to carry out the following configuration 
     - IP Address: 192.168.0.5
     - Subnet Mask: 255.255.255.0
     - Default Gateway: 192.168.0.1
-    - Preferred DNS: 127.0.0.1
+    - Preferred DNS: 192.168.0.2
     - Alternative DNS: 8.8.8.8
     
 - Within WEB02 run the following commands:
