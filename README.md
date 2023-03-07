@@ -14,11 +14,13 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
 
 The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy five servers onto that Hyper-V environment. 
 
-|  VM Name  | Operating System   | Purpose   |   |   |
+|  VM Name  | Operating System   | Purpose   |  
 |---|---|---|---|---|
-|  AD01 |  Windows Server 2008 R2 | Domain Controller   |   |   |
-|   |   |   |   |   |
-|   |   |   |   |   |
+|  AD01 |  Windows Server 2008 R2 | Domain Controller   |  
+|  FS01 | Windows Server 2021 R2   | File Server   |   
+| SQL01  | Windows Server 2016   | SQL Server  |  
+| WEB01  | Windows Server ??   |??  |   
+| WEB02  | Windows Server ??   | ?? |   
  
 ## Setup - IP Configuration
 
