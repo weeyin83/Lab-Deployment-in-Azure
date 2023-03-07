@@ -17,9 +17,9 @@ The ARM template will deploy a virtual machine within Azure and then install Hyp
 |  VM Name  | Operating System   | Purpose   |  
 |---|---|---|
 |  AD01 |  Windows Server 2008 R2 | Domain Controller   |  
-|  FS01 | Windows Server 2021 R2   | File Server   |   
+|  FS01 | Windows Server 2012 R2   | File Server   |   
 | SQL01  | Windows Server 2016   | SQL Server  |  
-| WEB01  | Windows Server ??   |??  |   
+| WEB01  | Windows Server 2016   |??  |   
 | WEB02  | Windows Server ??   | ?? |   
  
 ## Setup - IP Configuration
