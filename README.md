@@ -54,7 +54,7 @@ Once the servers are deployed you need to carry out the following configuration 
 - Log into WEB01 and set the server to have a static IP configuration as follows:
     - IP Address: 192.168.0.5
     - Subnet Mask: 255.255.255.0
-    - Preferred DNS: 192.168.0.2
+    - Default Gateway: 192.168.0.1
     - Preferred DNS: 127.0.0.1
     - Alternative DNS: 8.8.8.8
     
