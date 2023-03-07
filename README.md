@@ -17,27 +17,34 @@ The ARM template will deploy a virtual machine within Azure and then install Hyp
 Once the servers are deployed you need to carry out the following configuration within the servers manually: 
 
 - Log into AD01 and set the server to have a static IP configuration as follows: 
-    - IP Address: 192.168.2.10
+    - IP Address: 192.168.0.2
     - Subnet Mask: 255.255.255.0
-    - Default Gateway: 192.168.2.1
+    - Default Gateway: 192.168.0.1
     - Preferred DNS: 127.0.0.1
-    - Alternative DNS: 1.1.1.1
+    - Alternative DNS: 8.8.8.8
 
 - Log into FS01 and set the server to have a static IP configuration as follows:
-    - IP Address: 192.168.2.11
+    - IP Address: 192.168.0.3
     - Subnet Mask: 255.255.255.0
-    - Default Gateway: 192.168.2.1
-    - Preferred DNS: 192.168.2.10
+    - Default Gateway: 192.168.0.1
+    - Preferred DNS: 192.168.0.2
     - Alternative DNS: 1.1.1.1
 
 - Log into SQL01 and set the server to have a static IP configuration as follows:
-    - IP Address: 192.168.2.13
+    - IP Address: 192.168.0.4
     - Subnet Mask: 255.255.255.0
-    - Default Gateway: 192.168.2.1
-    - Preferred DNS: 192.168.2.10
-    - Alternative DNS: 1.1.1.1
-
-- Within WEB01 run the following commands:
+    - Default Gateway: 192.168.0.1
+    - Preferred DNS: 127.0.0.1
+    - Alternative DNS: 8.8.8.8
+    
+- Log into WEB01 and set the server to have a static IP configuration as follows:
+    - IP Address: 192.168.0.5
+    - Subnet Mask: 255.255.255.0
+    - Default Gateway: 192.168.0.1
+    - Preferred DNS: 127.0.0.1
+    - Alternative DNS: 8.8.8.8
+    
+- Within WEB02 run the followign commands:
     - sudo apt-get update
     - sudo apt-get upgrade  
     - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
