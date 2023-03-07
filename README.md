@@ -9,10 +9,18 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fweeyin83%2FLab-Deployment-in-Azure%2Fmaster%2FVMdeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+
+## Lab Details
+
+The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy five servers onto that Hyper-V environment. 
+
+|  VM Name  | Operating System   | Purpose   |   |   |
+|---|---|---|---|---|
+|  AD01 |  Windows Server 2008 R2 | Domain Controller   |   |   |
+|   |   |   |   |   |
+|   |   |   |   |   |
  
 ## Setup - IP Configuration
-
-The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy three servers onto that Hyper-V environment. 
 
 Once the servers are deployed you need to carry out the following configuration within the servers manually: 
 
