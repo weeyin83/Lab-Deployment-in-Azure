@@ -10,19 +10,24 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+## Azure VM Details
+This lab is all hosted within an Azure VM.  The Azure VM allows for nested virtualisation. 
+
+The VM has Windows Server 2022 installed and Hyper-V enabled. The template deploys the lab as a Standard D8s v3 (8 vcpus, 32 GiB memory) VM.  Ideally using a 
+
 ## Lab Details
 
 The ARM template will deploy a virtual machine within Azure and then install Hyper-V within that virtual machine.  It will also download some VHD files and deploy five servers onto that Hyper-V environment. 
 
 The servers are all joined to the domain **tailwindtraders.org**. The login name for the admin of the domain is **tailwindtraders\administrator** and the password is: **Password**: demo@pass123
 
-|  VM Name  | Operating System   | Purpose   |  
-|---|---|---|
-|  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  
-|  FS01 | Windows Server 2012 R2   | File Server   |   
-| SQL01  | Windows Server 2016   | SQL Server  |  
-| WEB01  | Windows Server 2016   | Web front end server  |   
-| WEB02  | Ubuntu Server 22.04.2   | ?? |   
+|  VM Name  | Operating System   | Purpose   |  Processor | Memory |
+|---|---|---|---|---|
+|  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  1 | 2GB |
+|  FS01 | Windows Server 2012 R2   | File Server   |   1 | 2GB |
+| SQL01  | Windows Server 2016   | SQL Server  |  1 | 8GB |
+| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB |
+| WEB02  | Ubuntu Server 22.04.2   | ?? |   1 | 4GB |
 
 The servers were last patched on the 7th March 2023. 
 
