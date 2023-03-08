@@ -10,6 +10,16 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+<!-- TOC start -->
+- [Lab Deployment in Azure](#lab-deployment-in-azure)
+  * [Azure VM Details](#azure-vm-details)
+  * [Lab Details](#lab-details)
+  * [Setup - IP Configuration](#setup-ip-configuration)
+  * [Setup - Azure VM Host Credentials](#setup-azure-vm-host-credentials)
+  * [Setup - Windows Updates](#setup-windows-updates)
+  * [Credits](#credits)
+<!-- TOC end -->
+
 ## Azure VM Details
 This lab is all hosted within an Azure VM.  The Azure VM allows for nested virtualisation. 
 
