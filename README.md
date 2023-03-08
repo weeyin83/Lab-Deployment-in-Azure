@@ -35,11 +35,11 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 |---|---|---|---|---|---|
 |  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  1 | 2GB | |
 |  FS01 | Windows Server 2012 R2   | File Server   |   1 | 2GB | The file share is on the C drive, there are some sample files and folders. You can use this to lab out some Azure File shares. |
-| SQL01  | Windows Server 2016   | SQL Server  |  1 | 8GB | The SQL installation is on the C drive, not best practice, but okay for a lab and maybe identifying improvements that can be made.  |
-| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | |
+| SQL01  | Windows Server 2016   | SQL Server  |  2 | 8GB | The SQL installation is on the C drive, not best practice, but okay for a lab and maybe identifying improvements that can be made.  |
+| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | IIS is installed on this server. |
 | WEB02  | Ubuntu Server 22.04.2   | ?? |   1 | 4GB | |
 
-The servers were last patched on the 7th March 2023. 
+FS01, SQL01, WEB01 and WEB02 were all patched at the start of March 2023.  AD01 wouldn't patch. 
 
 The AD01 server is the domain controller, DHCP and DNS server.  It should give out IP addresses to the servers when imported, but if you have any issues there are details on how to set static IPs to them below. 
 
@@ -49,7 +49,9 @@ SQL01 is the database server, it has the SQL server role installed and the SQL s
 
 WEB01 is an IIS Server. 
 
-WEB02 is a Ubuntu server, and has ****..... 
+WEB02 is a Ubuntu server. 
+
+None of the servers are activated with licenses, if you have an MSDN subscription you can get product keys to activate the servers or run them as is with a trial license. 
  
 ## Setup - IP Configuration
 
