@@ -102,7 +102,16 @@ _It is recommend that you change this._
 
 ## Setup - Windows Updates
 
-The VMs that are deployed during this lab environment were patched in May 2021, if you are deploying after this time and you want to get your system up to date there is a script on each VM that you can use to do that, C:\Scripts\patches.ps1 will install a PowerShell module and then check for updates that are missing and install them.  You can run this script and let it run while you carry out other tasks. 
+If you are deploying this lab after March 2023 and want to update patches, you can initial this manually.  Alternatively there is a script on the file share **\\FS01\TT-Files\ITScripts\Updates.ps1** that can be ran and force patching.
+
+## Lab Usage
+This lab has been designed to try and simulate an on-prem infrastructure, with common servers you'd encounter or need.  A domain controller, file server, SQL database, and some web servers. 
+
+You can spin up this lab and try out some of the following:
+* Install Azure Arc on the servers and try to extend Azure services to them
+* Configure Azure File Sync and leverage that within a "production" like environment
+* Deploy Azure Migrate and assess the workloads _(note you will have to treat the servers like physical servers as you don't have access to assess the top Hyper-V layer)_
+* Any other use cases you might have... 
 
 
 ## Credits
