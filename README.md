@@ -75,9 +75,9 @@ Once the servers are deployed you need to carry out the following configuration 
     
 - Within WEB02 run the following commands:
     - sudo apt-get update
-    - sudo apt-get upgrade  
+    - sudo apt-get upgrade -y
     - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
-    - sudo apt-get install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial -y 
+    - sudo apt-get install --install-recommends linux-tools-virtual-lts -y 
 
 ## Setup - Azure VM Host Credentials
 
@@ -86,7 +86,7 @@ To log onto the Azure VM the credentials are:
 **Username**: mcwadmin
 **Password**: demo@pass123
 
-_It is recommend that you chance this._
+_It is recommend that you change this._
 
 ## Setup - Windows Updates
 
