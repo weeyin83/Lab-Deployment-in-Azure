@@ -17,6 +17,7 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
   * [Setup - IP Configuration](#setup-ip-configuration)
   * [Setup - Azure VM Host Credentials](#setup-azure-vm-host-credentials)
   * [Setup - Windows Updates](#setup-windows-updates)
+  * [Lab Use Cases](#lab-use-cases)
   * [Credits](#credits)
 <!-- TOC end -->
 
@@ -104,7 +105,7 @@ _It is recommend that you change this._
 
 If you are deploying this lab after March 2023 and want to update patches, you can initial this manually.  Alternatively there is a script on the file share **\\FS01\TT-Files\ITScripts\Updates.ps1** that can be ran and force patching.
 
-## Lab Usage
+## Lab Use Cases
 This lab has been designed to try and simulate an on-prem infrastructure, with common servers you'd encounter or need.  A domain controller, file server, SQL database, and some web servers. 
 
 You can spin up this lab and try out some of the following:
