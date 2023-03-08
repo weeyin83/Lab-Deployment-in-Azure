@@ -23,7 +23,7 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
 ## Azure VM Details
 This lab is all hosted within an Azure VM.  The Azure VM allows for nested virtualisation. 
 
-The VM has Windows Server 2022 installed and Hyper-V enabled. The template deploys the lab as a Standard D8s v3 (8 vcpus, 32 GiB memory) VM.  Ideally using a 
+The VM has Windows Server 2022 installed and Hyper-V enabled. The template deploys the lab as a Standard D8s v3 (8 vcpus, 32 GiB memory) VM.  The recommendation would be that once you have deployed the lab to scale the Azure VM to a size that makes sense for your intended purpose.  If you are you going to deploy more virtual machines to it then you need to make it larger. 
 
 ## Lab Details
 
@@ -31,13 +31,13 @@ The ARM template will deploy a virtual machine within Azure and then install Hyp
 
 The servers are all joined to the domain **tailwindtraders.org**. The login name for the admin of the domain is **tailwindtraders\administrator** and the password is: **Password**: demo@pass123
 
-|  VM Name  | Operating System   | Purpose   |  Processor | Memory |
-|---|---|---|---|---|
-|  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  1 | 2GB |
-|  FS01 | Windows Server 2012 R2   | File Server   |   1 | 2GB |
-| SQL01  | Windows Server 2016   | SQL Server  |  1 | 8GB |
-| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB |
-| WEB02  | Ubuntu Server 22.04.2   | ?? |   1 | 4GB |
+|  VM Name  | Operating System   | Purpose   |  Processor | Memory | Comments |
+|---|---|---|---|---|---|
+|  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  1 | 2GB | |
+|  FS01 | Windows Server 2012 R2   | File Server   |   1 | 2GB | The file share is on the C drive, there are some sample files and folders. You can use this to lab out some Azure File shares. |
+| SQL01  | Windows Server 2016   | SQL Server  |  1 | 8GB | The SQL installation is on the C drive, not best practice, but okay for a lab and maybe identifying improvements that can be made.  |
+| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | |
+| WEB02  | Ubuntu Server 22.04.2   | ?? |   1 | 4GB | |
 
 The servers were last patched on the 7th March 2023. 
 
