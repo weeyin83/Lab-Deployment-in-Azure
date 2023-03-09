@@ -10,21 +10,30 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-<!-- TOC start -->
+# Table of contents
+
 - [Lab Deployment in Azure](#lab-deployment-in-azure)
-  * [Azure VM Details](#azure-vm-details)
-  * [Lab Details](#lab-details)
-  * [Setup - IP Configuration](#setup-ip-configuration)
-  * [Setup - Azure VM Host Credentials](#setup-azure-vm-host-credentials)
-  * [Setup - Windows Updates](#setup-windows-updates)
-  * [Lab Use Cases](#lab-use-cases)
-  * [Credits](#credits)
-<!-- TOC end -->
+  - [Azure VM Details](#azure-vm-details)
+  - [Azure VM Host Credentials](#azure-vm-host-credentials)
+  - [Lab Details](#lab-details)
+  - [Lab virtual machines IP Information](#lab-virtual-machines-ip-information)
+  - [Lab VM Windows Updates](#lab-vm-windows-updates)
+  - [Lab Use Cases](#lab-use-cases)
+  - [Credits](#credits)
 
 ## Azure VM Details
 This lab is all hosted within an Azure VM.  The Azure VM allows for nested virtualisation. 
 
 The VM has Windows Server 2022 installed and Hyper-V enabled. The template deploys the lab as a Standard D8s v3 (8 vcpus, 32 GiB memory) VM.  The recommendation would be that once you have deployed the lab to scale the Azure VM to a size that makes sense for your intended purpose.  If you are you going to deploy more virtual machines to it then you need to make it larger. 
+
+## Azure VM Host Credentials
+
+To log onto the Azure VM the credentials are: 
+
+**Username**: mcwadmin
+**Password**: demo@pass123
+
+_It is recommend that you change this._
 
 ## Lab Details
 
@@ -36,9 +45,9 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 |---|---|---|---|---|---|
 |  AD01 |  Windows Server 2008 R2 | Domain Controller, DHCP, DNS   |  1 | 2GB | |
 |  FS01 | Windows Server 2012 R2   | File Server   |   1 | 2GB | The file share is on the C drive, there are some sample files and folders. You can use this to lab out some Azure File shares. |
-| SQL01  | Windows Server 2016   | SQL Server  |  2 | 8GB | The SQL installation is on the C drive, not best practice, but okay for a lab and maybe identifying improvements that can be made.  |
-| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | IIS is installed on this server. |
-| WEB02  | Ubuntu Server 22.04.2   | ?? |   1 | 2GB | |
+| SQL01  | Windows Server 2016   | SQL Server  |  2 | 8GB | The SQL installation is on the C drive, not best practice, but okay for a lab and maybe identifying improvements that can be made.  The SQL Server hosts a database called HRDatabase, this is part of the work from the following website: [https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/](https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/)  |
+| WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | IIS is installed on this server.  If you browse to the IP address of this server from any other server on the network you will get a small HR database website.  The website queries the database installed on SQL01. This is part of the work from the following website: [https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/](https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/) |
+| WEB02  | Ubuntu Server 22.04.2   | Future web front end server |   1 | 2GB | The IP address on this server should be statically set. This is domain joined and has Apache2 installed.  You can browse to the website http://192.168.0.24 from another computer on the network and view the default Apache2 page. |
 
 FS01, SQL01, WEB01 and WEB02 were all patched at the start of March 2023.  AD01 wouldn't patch. 
 
@@ -48,13 +57,9 @@ The FS01 server is a file server.  It has the file server role installed on it, 
 
 SQL01 is the database server, it has the SQL server role installed and the SQL server management tools installed. 
 
-WEB01 is an IIS Server. 
-
-WEB02 is a Ubuntu server. 
-
 None of the servers are activated with licenses, if you have an MSDN subscription you can get product keys to activate the servers or run them as is with a trial license. 
  
-## Setup - IP Configuration
+## Lab virtual machines IP Information
 
 Once the servers are deployed you need to carry out the following configuration within the servers manually: 
 
@@ -89,19 +94,9 @@ Once the servers are deployed you need to carry out the following configuration 
 - Within WEB02 run the following commands:
     - sudo apt-get update
     - sudo apt-get upgrade -y
-    - sudo apt-get install "linux-cloud-tools-$(uname -r)" -y
-    - sudo apt-get install --install-recommends linux-tools-virtual-lts -y 
 
-## Setup - Azure VM Host Credentials
 
-To log onto the Azure VM the credentials are: 
-
-**Username**: mcwadmin
-**Password**: demo@pass123
-
-_It is recommend that you change this._
-
-## Setup - Windows Updates
+## Lab VM Windows Updates
 
 If you are deploying this lab after March 2023 and want to update patches, you can initial this manually.  Alternatively there is a script on the file share **\\FS01\TT-Files\ITScripts\Updates.ps1** that can be ran and force patching.
 
@@ -124,3 +119,4 @@ Find me on:
 * Twitter: https://twitter.com/techielass
 * LinkedIn: http://uk.linkedin.com/in/sazlean
 * Github: https://github.com/weeyin83
+
