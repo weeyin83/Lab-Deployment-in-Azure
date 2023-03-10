@@ -14,7 +14,7 @@
     },
     "HyperVHostAdminPassword": {
       "type": "string",
-      "defaultValue": "pass@123demo",
+      "defaultValue": "demo@pass123",
       "minLength": 1
     }
   },
@@ -34,10 +34,10 @@
     "HyperVHost-PUBIPName": "[concat(variables('HyperVHostName'), '-PIP')]",
     "HyperVHostConfigArchiveFolder": ".",
     "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
-    "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/master/HyperVHostConfig.zip?raw=true",
+    "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/main/HyperVHostConfig.zip?raw=true",
     "HyperVHostInstallHyperVScriptFolder": ".",
     "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
-    "HyperVHostInstallHyperVURL": "https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/master/InstallHyperV.ps1"
+    "HyperVHostInstallHyperVURL": "https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/main/InstallHyperV.ps1"
   },
   "resources": [
     {
