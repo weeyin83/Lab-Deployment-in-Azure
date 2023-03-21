@@ -28,6 +28,7 @@
     "HyperVHostWindowsOSVersion": "2022-Datacenter",
     "HyperVHostOSDiskName": "[concat(variables('HyperVHostName'), '-OSDISK')]",
     "HyperVHostVmSize": "Standard_D8s_v3",
+    "HyperVHost-NSG": "[concat(variables('HyperVHostName'), '-NSG')]",
     "HyperVHostVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
     "HyperVHostSubnetRef": "[concat(variables('HyperVHostVnetID'), '/subnets/', variables('OnPremVNETSubnet1Name'))]",
     "HyperVHostNicName": "[concat(variables('HyperVHostName'), '-NIC')]",
@@ -40,6 +41,31 @@
     "HyperVHostInstallHyperVURL": "https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/main/InstallHyperV.ps1"
   },
   "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('HyperVHost-NSG')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "RDP_Access",
+            "properties":
+            {
+              "description": "Allow RDP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "[variables('OnPremVNETSubnet1Prefix')]",
+              "access": "Allow",
+              "priority": "100",
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
     {
       "name": "OnPremVNET",
       "type": "Microsoft.Network/virtualNetworks",
@@ -59,7 +85,10 @@
           {
             "name": "[variables('OnPremVNETSubnet1Name')]",
             "properties": {
-              "addressPrefix": "[variables('OnPremVNETSubnet1Prefix')]"
+              "addressPrefix": "[variables('OnPremVNETSubnet1Prefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
+              }
             }
           }
         ]
@@ -107,7 +136,10 @@
               }
             }
           }
-        ]
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
+        }
       }
     },
     {
