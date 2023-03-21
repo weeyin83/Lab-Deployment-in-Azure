@@ -30,7 +30,7 @@ The VM has Windows Server 2022 installed and Hyper-V enabled. The template deplo
 
 To log onto the Azure VM the credentials are: 
 
-**Username**: mcwadmin
+**Username**: rootadmin
 **Password**: demo@pass123
 
 _It is recommend that you change this._
