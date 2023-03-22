@@ -20,7 +20,7 @@ The first that that you need to do is deploy the Azure virtual machine (VM) that
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-_It can take 55minutes for the lab to fully deploy._
+_It can take 50-70 minutes for the lab to fully deploy._
 
 ## Set up the lab
 
