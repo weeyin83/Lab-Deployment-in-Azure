@@ -22,15 +22,21 @@ You can click on the following button and it will take you to the Azure Portal w
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Alternatively if you would like to deploy the lab using Azure Bicep you can clone the repo and deploy the template using the following Azure CLI commands: 
+Alternatively if you would like to deploy the lab using Azure Bicep you can clone the repo and deploy the template using the following Azure PowerShell commands: 
 
-```cli
+```powershell
+
+## Create variables - modify these to suit your deployment needs
+$ResourceGroupName = "AzureLab"
+$Location = "uksouth"
+$BicepDeploymentName = "AzureLabDeployment"
+$DNSName = "AzureLab"
 
 ## Create an Azure Resource Group
-az group create --name AzureLab --location uksouth
+New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
 ## Deploy the Azure Lab using Bicep
-az deployment group create --resource-group AzureLab --template-file VMdeploy.bicep
+New-AzResourceGroupDeployment -name $BicepDeploymentName -ResourceGroupName $ResourceGroupName -TemplateFile VMdeploy.bicep -hypervHostDnsName $DNSName
 ```
 
 _It can take 50-70 minutes for the lab to fully deploy._

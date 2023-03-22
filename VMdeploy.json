@@ -73,7 +73,7 @@
       "name": "OnPremVNET",
       "type": "Microsoft.Network/virtualNetworks",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2022-11-01",
+      "apiVersion": "2022-07-01",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
       ],
