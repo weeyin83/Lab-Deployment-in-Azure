@@ -52,7 +52,10 @@ Before you can work with an Azure file share, you must create an Azure storage a
 * Under Instance details, provide a name for the storage account. You might need to add a few random numbers to make it a globally unique name. A storage account name must be all lowercase and numbers, and must be between 3 and 24 characters. Make a note of your storage account name. You'll use it later
 * In Region, select the region you want to create your storage account in
 * In Performance, keep the default value of Standard
-* In Redundancy, select Locally redundant storage (LRS)
+* In Redundancy, select Locally redundant storage (LRS) for the purposes of this tutorial
+
+![Storage Account Configuration](images/storage-account-configuration.png)
+
 * Select Review to review your settings. Azure will run a final validation
 * When validation is complete, select **Create**. You should see a notification that deployment is in progress
 
@@ -61,8 +64,10 @@ Before you can work with an Azure file share, you must create an Azure storage a
 Now you have a storage account, it's time to create the file share. 
 
 * Within the Storage account you created navigate to **Data Storage** and **File Shares** 
-* Select + File Share
+* Select **+ File Share**
 * Name the new file share **ttfileshare**, leave the tier set to Transaction optimized, and then select Create. You only need 5 TiB for this tutorial
+
+![File Share Configuration](images/file-share-configuration.png)
 
 ### Deploy the Storage Sync Service
 
@@ -75,6 +80,9 @@ We now need to set up the Storage Sync Service so that our on-prem file share sy
 * Select the resource group
 * For the **Storage Sync service name** call it something like **ttfile-sync**
 * Select an appropriate region
+
+![Azure File Sync Service Configuration](images/file-sync-configuration.png)
+
 * When you're finished, select **Review + Create** and then **Create** to deploy the Storage Sync Service. The service will take a few minutes to deploy.
 
 ### Install the Azure File Sync Agent
@@ -85,6 +93,7 @@ The Azure File Sync agent is a downloadable package that allows the Windows Serv
 * Open up a browser
 * Go to [Microsoft Download Center](https://go.microsoft.com/fwlink/?linkid=858257).  Scroll down to the **Azure File Sync Agent** and select **Download**
 * There is a different download for each version of Windows Server, as FS01 is a Windows Server 2012 R2 server, select the check box for **StorageSyncAgent_WS2012R2.msi** and select **Next**
+* Open the file downloaded
 * Select **Allow once > Run**
 * Go through the **Storage Sync Agent Setup Wizard** and accept the defaults
 * Select **Install**
@@ -112,6 +121,9 @@ A sync group defines the sync topology for a set of files. A sync group must con
     * Select the Azure subscription
     * Select the storage account that you created earlier
     * Select the Azure file share that you created earlier
+
+![Sync Group Configuration](images/sync-group-configuration.png)
+
 * Select **Create**
 
 You now have a sync group with a cloud endpoint. 
@@ -124,6 +136,9 @@ You now have a sync group with a cloud endpoint.
     * Provide the path to where the files are on your server, in this example they are located in **C:\Shares\TT-Files**
     * You can enable Cloud Tiering if you would like to test how that works, but it is an optional setting
     * Within the **Initial Sync** setting you can leave the default options for this tutorial, but it's important to understand the options for real world examples
+
+![Server Endpoint Configuration](images/server-endpoint-configuration.png)
+
 * Select **Create**
 
 Within a few minutes you should start to see the file sync from your Windows server to the Azure file share. 
