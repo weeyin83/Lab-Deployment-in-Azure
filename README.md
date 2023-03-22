@@ -19,6 +19,7 @@ Within this repo you will find an ARM template that deploys a virtual machine wi
   - [Lab virtual machines IP Information](#lab-virtual-machines-ip-information)
   - [Lab VM Windows Updates](#lab-vm-windows-updates)
   - [Lab Use Cases](#lab-use-cases)
+  - [Tutorials](#tutorials)
   - [Credits](#credits)
 
 ## Azure VM Details
@@ -108,6 +109,13 @@ You can spin up this lab and try out some of the following:
 * Configure Azure File Sync and leverage that within a "production" like environment
 * Deploy Azure Migrate and assess the workloads _(note you will have to treat the servers like physical servers as you don't have access to assess the top Hyper-V layer)_
 * Any other use cases you might have... 
+
+## Tutorials
+
+Some tutorials on how to use this lab have been created: 
+
+* [Lab deployment steps](Tutorials/lab-deployment.md)
+* [Use Azure File Shares with the lab](Tutorials/file-server.md)
 
 
 ## Credits
