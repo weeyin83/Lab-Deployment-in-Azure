@@ -105,7 +105,7 @@ This lab has been designed to try and simulate an on-prem infrastructure, with c
 
 You can spin up this lab and try out some of the following:
 * Install Azure Arc on the servers and try to extend Azure services to them
-* Configure Azure File Sync and leverage that within a "production" like environment
+* Configure Azure File Sync and leverage that within a "production" like environment - [follow the tutorial](Tutorials/file-server.md)
 * Deploy Azure Migrate and assess the workloads _(note you will have to treat the servers like physical servers as you don't have access to assess the top Hyper-V layer)_
 * Any other use cases you might have... 
 
