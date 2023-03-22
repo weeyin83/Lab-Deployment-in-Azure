@@ -42,7 +42,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2022-07-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('HyperVHost-NSG')]",
       "location": "[resourceGroup().location]",
@@ -70,7 +70,7 @@
       "name": "OnPremVNET",
       "type": "Microsoft.Network/virtualNetworks",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2018-12-01",
+      "apiVersion": "2022-11-01",
       "dependsOn": [],
       "tags": {
         "Purpose": "LabDeployment"
@@ -98,7 +98,7 @@
       "name": "[variables('HyperVHost-PUBIPName')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2018-12-01",
+      "apiVersion": "2022-07-01",
       "dependsOn": [],
       "tags": {
         "Purpose": "LabDeployment"
@@ -114,7 +114,7 @@
       "name": "[variables('HyperVHostNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2018-12-01",
+      "apiVersion": "2022-07-01",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
         "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
@@ -146,7 +146,7 @@
       "name": "[variables('HyperVHostName')]",
       "type": "Microsoft.Compute/virtualMachines",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2018-10-01",
+      "apiVersion": "2022-11-01",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
       ],
@@ -187,7 +187,7 @@
           "name": "InstallHyperV",
           "type": "extensions",
           "location": "[resourceGroup().location]",
-          "apiVersion": "2017-12-01",
+          "apiVersion": "2022-11-01",
           "dependsOn": [
             "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
           ],
@@ -211,7 +211,7 @@
           "name": "HyperVHostConfig",
           "type": "extensions",
           "location": "[resourceGroup().location]",
-          "apiVersion": "2017-12-01",
+          "apiVersion": "2022-11-01",
           "dependsOn": [
             "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
             "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
