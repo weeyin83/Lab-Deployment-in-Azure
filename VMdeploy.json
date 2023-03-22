@@ -71,7 +71,9 @@
       "type": "Microsoft.Network/virtualNetworks",
       "location": "[resourceGroup().location]",
       "apiVersion": "2022-11-01",
-      "dependsOn": [],
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
+      ],
       "tags": {
         "Purpose": "LabDeployment"
       },
