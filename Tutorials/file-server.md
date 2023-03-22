@@ -121,7 +121,7 @@ You now have a sync group with a cloud endpoint.
 * Select the newly created sync group and then select **Add server endpoint**
 * Within the setup you will be asked to provide information: 
     * Within the registered server box select the server, you should see FS01 as an option
-    * Provide the path to where the files are on your server, in this example they are located in **FILE PATH**
+    * Provide the path to where the files are on your server, in this example they are located in **C:\Shares\TT-Files**
     * You can enable Cloud Tiering if you would like to test how that works, but it is an optional setting
     * Within the **Initial Sync** setting you can leave the default options for this tutorial, but it's important to understand the options for real world examples
 * Select **Create**
