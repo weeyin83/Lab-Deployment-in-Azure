@@ -31,6 +31,9 @@ var HyperVHostInstallHyperVURL = 'https://raw.githubusercontent.com/weeyin83/Lab
 resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: HyperVHost_NSG_Name
   location: location
+  tags: {
+    Purpose: 'LabDeployment'
+  }
   properties: {
     securityRules: [
       {

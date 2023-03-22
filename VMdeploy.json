@@ -46,6 +46,9 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('HyperVHost-NSG')]",
       "location": "[resourceGroup().location]",
+      "tags": {
+        "Purpose": "LabDeployment"
+      },
       "properties": {
         "securityRules": [
           {
