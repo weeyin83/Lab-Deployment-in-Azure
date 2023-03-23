@@ -1,16 +1,15 @@
-param location string = resourceGroup().location
-
 @minLength(1)
 param hypervHostDnsName string = 'hypervhostupdateme'
 
 @minLength(1)
 param HyperVHostAdminUserName string = 'rootadmin'
 
+@minLength(1)
 @secure()
-@minLength(8)
-param HyperVHostAdminPassword string
+param HyperVHostAdminPassword string = 'demo@pass123'
 
-var OnPremVNETName = 'OnPremVNET'
+param location string = resourceGroup().location
+
 var OnPremVNETPrefix = '10.0.0.0/16'
 var OnPremVNETSubnet1Name = 'VMHOST'
 var OnPremVNETSubnet1Prefix = '10.0.0.0/24'
@@ -18,21 +17,23 @@ var HyperVHostName = 'HYPERVHOST'
 var HyperVHostImagePublisher = 'MicrosoftWindowsServer'
 var HyperVHostImageOffer = 'WindowsServer'
 var HyperVHostWindowsOSVersion = '2022-Datacenter'
-var HyperVHostOSDiskName = '${HyperVHostName}-OSDISK'
 var HyperVHostVmSize = 'Standard_D8s_v3'
-var HyperVHostNSGName = '${HyperVHostName}-NSG'
+var HyperVHost_NSG_Name = '${HyperVHostName}-NSG'
+var HyperVHostVnetID = OnPremVNET.id
+var HyperVHostSubnetRef = '${HyperVHostVnetID}/subnets/${OnPremVNETSubnet1Name}'
 var HyperVHostNicName = '${HyperVHostName}-NIC'
 var HyperVHost_PUBIPName = '${HyperVHostName}-PIP'
-var HyperVHostConfigArchiveFolder = '.'
-var HyperVHostConfigArchiveFileName = 'HyperVHostConfig.zip'
 var HyperVHostConfigURL = 'https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/main/HyperVHostConfig.zip?raw=true'
 var HyperVHostInstallHyperVScriptFolder = '.'
 var HyperVHostInstallHyperVScriptFileName = 'InstallHyperV.ps1'
 var HyperVHostInstallHyperVURL = 'https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/main/InstallHyperV.ps1'
 
-resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2015-06-15' = {
-  name: HyperVHostNSGName
+resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+  name: HyperVHost_NSG_Name
   location: location
+  tags: {
+    Purpose: 'LabDeployment'
+  }
   properties: {
     securityRules: [
       {
@@ -53,8 +54,8 @@ resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2015-06-15' = {
   }
 }
 
-resource OnPremVNET 'Microsoft.Network/virtualNetworks@2018-12-01' = {
-  name: OnPremVNETName
+resource OnPremVNET 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+  name: 'OnPremVNET'
   location: location
   tags: {
     Purpose: 'LabDeployment'
@@ -77,9 +78,10 @@ resource OnPremVNET 'Microsoft.Network/virtualNetworks@2018-12-01' = {
       }
     ]
   }
+  dependsOn: []
 }
 
-resource HyperVHost_PUBIP 'Microsoft.Network/publicIPAddresses@2018-12-01' = {
+resource HyperVHost_PUBIP 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
   name: HyperVHost_PUBIPName
   location: location
   tags: {
@@ -94,7 +96,7 @@ resource HyperVHost_PUBIP 'Microsoft.Network/publicIPAddresses@2018-12-01' = {
   dependsOn: []
 }
 
-resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2018-12-01' = {
+resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
   name: HyperVHostNicName
   location: location
   tags: {
@@ -107,7 +109,7 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2018-12-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets', OnPremVNETName, OnPremVNETSubnet1Name)
+            id: HyperVHostSubnetRef
           }
           publicIPAddress: {
             id: HyperVHost_PUBIP.id
@@ -121,7 +123,7 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2018-12-01' = {
   }
 }
 
-resource HyperVHost 'Microsoft.Compute/virtualMachines@2018-10-01' = {
+resource HyperVHost 'Microsoft.Compute/virtualMachines@2022-11-01' = {
   name: HyperVHostName
   location: location
   tags: {
@@ -144,7 +146,6 @@ resource HyperVHost 'Microsoft.Compute/virtualMachines@2018-10-01' = {
         version: 'latest'
       }
       osDisk: {
-        name: HyperVHostOSDiskName
         createOption: 'FromImage'
         diskSizeGB: 500
       }
