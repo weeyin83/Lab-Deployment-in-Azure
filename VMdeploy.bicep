@@ -1,7 +1,7 @@
 @minLength(1)
 param HyperVHostAdminUserName string 
 
-@minLength(1)
+@minLength(8)
 @secure()
 param HyperVHostAdminPassword string
 
@@ -32,8 +32,6 @@ var HyperVHostNicName = '${HyperVHostName}-NIC'
 var BastionNsgName = '${BastionHostName}-NSG'
 var BastionHostName = 'azmigrationlab-bastion'
 var Bastion_PUBIPName = '${BastionHostName}-PIP'
-var HyperVHostConfigArchiveFolder = '.'
-var HyperVHostConfigArchiveFileName = 'HyperVHostConfig.zip'
 var HyperVHostConfigURL = 'https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/main/HyperVHostConfig.zip?raw=true'
 var HyperVHostInstallHyperVScriptFolder = '.'
 var HyperVHostInstallHyperVScriptFileName = 'InstallHyperV.ps1'
@@ -331,9 +329,6 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
       id: HyperVHost_NSG.id
     }
   }
-  dependsOn: [
-    OnPremVNET
-  ]
 }
 
 resource HyperVHost 'Microsoft.Compute/virtualMachines@2022-11-01' = {
