@@ -26,8 +26,6 @@ var HyperVHostImageOffer = 'WindowsServer'
 var HyperVHostWindowsOSVersion = '2022-Datacenter'
 var HyperVHostVmSize = 'Standard_D8s_v3'
 var HyperVHost_NSG_Name = '${HyperVHostName}-NSG'
-var HyperVHostVnetID = OnPremVNET.id
-var HyperVHostSubnetRef = '${HyperVHostVnetID}/subnets/${OnPremVNETSubnet1Name}'
 var HyperVHostNicName = '${HyperVHostName}-NIC'
 var BastionNsgName = '${BastionHostName}-NSG'
 var BastionHostName = 'azmigrationlab-bastion'
@@ -320,7 +318,7 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: HyperVHostSubnetRef
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets',  OnPremVNETName, OnPremVNETBastionSubnetName)
           }
         }
       }
