@@ -1,11 +1,11 @@
-param location string = resourceGroup().location
-
 @minLength(1)
 param HyperVHostAdminUserName string 
 
+@minLength(1)
 @secure()
-@minLength(8)
-param HyperVHostAdminPassword string
+param HyperVHostAdminPassword string = 'demo@pass123'
+
+param location string = resourceGroup().location
 
 @description('Specify whether to provision new vnet or deploy to existing vnet')
 @allowed([
@@ -24,9 +24,10 @@ var HyperVHostName = 'HYPERVHOST'
 var HyperVHostImagePublisher = 'MicrosoftWindowsServer'
 var HyperVHostImageOffer = 'WindowsServer'
 var HyperVHostWindowsOSVersion = '2022-Datacenter'
-var HyperVHostOSDiskName = '${HyperVHostName}-OSDISK'
 var HyperVHostVmSize = 'Standard_D8s_v3'
-var HyperVHostNSGName = '${HyperVHostName}-NSG'
+var HyperVHost_NSG_Name = '${HyperVHostName}-NSG'
+var HyperVHostVnetID = OnPremVNET.id
+var HyperVHostSubnetRef = '${HyperVHostVnetID}/subnets/${OnPremVNETSubnet1Name}'
 var HyperVHostNicName = '${HyperVHostName}-NIC'
 var BastionNsgName = '${BastionHostName}-NSG'
 var BastionHostName = 'azmigrationlab-bastion'
@@ -39,8 +40,11 @@ var HyperVHostInstallHyperVScriptFileName = 'InstallHyperV.ps1'
 var HyperVHostInstallHyperVURL = 'https://raw.githubusercontent.com/weeyin83/Lab-Deployment-in-Azure/main/InstallHyperV.ps1'
 
 resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
-  name: HyperVHostNSGName
+  name: HyperVHost_NSG_Name
   location: location
+  tags: {
+    Purpose: 'LabDeployment'
+  }
   properties: {
     securityRules: [
       {
@@ -245,6 +249,7 @@ resource OnPremVNET 'Microsoft.Network/virtualNetworks@2022-07-01' = if (vnetNew
       }
     ]
   }
+  dependsOn: []
 }
 
 // if vnetNewOrExisting == 'existing', reference an existing vnet and create a new subnet under it
@@ -317,7 +322,7 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets', OnPremVNETName, OnPremVNETSubnet1Name)
+            id: HyperVHostSubnetRef
           }
         }
       }
@@ -354,7 +359,6 @@ resource HyperVHost 'Microsoft.Compute/virtualMachines@2022-11-01' = {
         version: 'latest'
       }
       osDisk: {
-        name: HyperVHostOSDiskName
         createOption: 'FromImage'
         diskSizeGB: 500
       }
