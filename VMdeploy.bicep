@@ -3,7 +3,7 @@ param HyperVHostAdminUserName string
 
 @minLength(1)
 @secure()
-param HyperVHostAdminPassword string = 'demo@pass123'
+param HyperVHostAdminPassword string
 
 param location string = resourceGroup().location
 
