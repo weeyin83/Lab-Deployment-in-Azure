@@ -50,7 +50,7 @@ resource HyperVHost_NSG 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
           protocol: 'Tcp'
           sourcePortRange: '*'
           destinationPortRange: '3389'
-          sourceAddressPrefix: 'Internet'
+          sourceAddressPrefix: 'virtualnetwork'
           destinationAddressPrefix: OnPremVNETSubnet1Prefix
           access: 'Allow'
           priority: 100
@@ -318,7 +318,7 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets',  OnPremVNETName, OnPremVNETBastionSubnetName)
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets',  OnPremVNETName, OnPremVNETSubnet1Name)
           }
         }
       }
