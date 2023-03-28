@@ -52,7 +52,7 @@ Configuration Main
 		
 			SetScript =
 			{
-				$zipDownload = "https://techielass.azureedge.net/azurelab/HyperVLabVMs.zip"
+				$zipDownload = "https://techielassblogstorage.blob.core.windows.net/azurelab/HyperVLabVMs.zip"
 				$downloadedFile = "D:\HyperVLabVMs.zip"
 				$vmFolder = "C:\VM"
 				Resize-Partition -DiskNumber 0 -PartitionNumber 2 -Size (400GB)
