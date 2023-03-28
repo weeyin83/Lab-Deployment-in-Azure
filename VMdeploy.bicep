@@ -327,6 +327,9 @@ resource HyperVHostNic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
       id: HyperVHost_NSG.id
     }
   }
+  dependsOn: [
+    OnPremVNET
+  ]
 }
 
 resource HyperVHost 'Microsoft.Compute/virtualMachines@2022-11-01' = {
@@ -364,6 +367,9 @@ resource HyperVHost 'Microsoft.Compute/virtualMachines@2022-11-01' = {
       ]
     }
   }
+  dependsOn: [
+    OnPremVNET
+  ]
 }
 
 resource HyperVHostName_InstallHyperV 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
