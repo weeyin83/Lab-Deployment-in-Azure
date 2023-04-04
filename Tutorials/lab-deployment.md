@@ -18,7 +18,6 @@ Alternatively if you would like to deploy the lab using Azure Bicep you can clon
 $ResourceGroupName = "AzureLab"
 $Location = "uksouth"
 $BicepDeploymentName = "AzureLabDeployment"
-$DNSName = "AzureLab"
 $HyperVHostAdminUserName = "adminuser"
 $HyperVHostAdminPassword = ConvertTo-SecureString -AsPlainText -Force "demo@password123"
 $vnetNeworExisting = "new"
