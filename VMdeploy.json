@@ -1,40 +1,54 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.15.31.15270",
+      "templateHash": "16975035903354495363"
+    }
+  },
   "parameters": {
-    "hypervHostDnsName": {
-      "type": "string",
-      "defaultValue": "hypervhostupdateme",
-      "minLength": 1
-    },
     "HyperVHostAdminUserName": {
       "type": "string",
-      "defaultValue": "rootadmin",
       "minLength": 1
     },
     "HyperVHostAdminPassword": {
+      "type": "securestring",
+      "minLength": 8
+    },
+    "location": {
       "type": "string",
-      "defaultValue": "demo@pass123",
-      "minLength": 1
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "vnetNewOrExisting": {
+      "type": "string",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Specify whether to provision new vnet or deploy to existing vnet"
+      }
     }
   },
   "variables": {
+    "OnPremVNETName": "OnPremVNET",
     "OnPremVNETPrefix": "10.0.0.0/16",
     "OnPremVNETSubnet1Name": "VMHOST",
     "OnPremVNETSubnet1Prefix": "10.0.0.0/24",
-    "HyperVHostName": "HYPERVHOST",
+    "OnPremVNETBastionSubnetName": "AzureBastionSubnet",
+    "OnPremVNETBastionSubnetPrefix": "10.0.1.0/24",
+    "HyperVHostName": "hypervhost",
     "HyperVHostImagePublisher": "MicrosoftWindowsServer",
     "HyperVHostImageOffer": "WindowsServer",
     "HyperVHostWindowsOSVersion": "2022-Datacenter",
-    "HyperVHostOSDiskName": "[concat(variables('HyperVHostName'), '-OSDISK')]",
     "HyperVHostVmSize": "Standard_D8s_v3",
-    "HyperVHost-NSG": "[concat(variables('HyperVHostName'), '-NSG')]",
-    "HyperVHostVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
-    "HyperVHostSubnetRef": "[concat(variables('HyperVHostVnetID'), '/subnets/', variables('OnPremVNETSubnet1Name'))]",
-    "HyperVHostNicName": "[concat(variables('HyperVHostName'), '-NIC')]",
-    "HyperVHost-PUBIPName": "[concat(variables('HyperVHostName'), '-PIP')]",
-    "HyperVHostConfigArchiveFolder": ".",
-    "HyperVHostConfigArchiveFileName": "HyperVHostConfig.zip",
+    "HyperVHost_NSG_Name": "[format('{0}-NSG', variables('HyperVHostName'))]",
+    "HyperVHostNicName": "[format('{0}-NIC', variables('HyperVHostName'))]",
+    "BastionNsgName": "[format('{0}-NSG', variables('BastionHostName'))]",
+    "BastionHostName": "[format('{0}-bastion', variables('HyperVHostName'))]",
+    "Bastion_PUBIPName": "[format('{0}-PIP', variables('BastionHostName'))]",
     "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/main/HyperVHostConfig.zip?raw=true",
     "HyperVHostInstallHyperVScriptFolder": ".",
     "HyperVHostInstallHyperVScriptFileName": "InstallHyperV.ps1",
@@ -42,24 +56,26 @@
   },
   "resources": [
     {
-      "apiVersion": "2022-07-01",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('HyperVHost-NSG')]",
-      "location": "[resourceGroup().location]",
+      "apiVersion": "2022-07-01",
+      "name": "[variables('HyperVHost_NSG_Name')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "Purpose": "LabDeployment"
+      },
       "properties": {
         "securityRules": [
           {
             "name": "RDP_Access",
-            "properties":
-            {
+            "properties": {
               "description": "Allow RDP",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "3389",
-              "sourceAddressPrefix": "Internet",
+              "sourceAddressPrefix": "virtualnetwork",
               "destinationAddressPrefix": "[variables('OnPremVNETSubnet1Prefix')]",
               "access": "Allow",
-              "priority": "100",
+              "priority": 100,
               "direction": "Inbound"
             }
           }
@@ -67,13 +83,163 @@
       }
     },
     {
-      "name": "OnPremVNET",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2022-07-01",
+      "name": "[variables('BastionNsgName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowHttpsInBound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "Internet",
+              "destinationPortRange": "443",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowGatewayManagerInBound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "GatewayManager",
+              "destinationPortRange": "443",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowLoadBalancerInBound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "AzureLoadBalancer",
+              "destinationPortRange": "443",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowBastionHostCommunicationInBound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationPortRanges": [
+                "8080",
+                "5701"
+              ],
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DenyAllInBound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowSshRdpOutBound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationPortRanges": [
+                "22",
+                "3389"
+              ],
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AllowAzureCloudCommunicationOutBound",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationPortRange": "443",
+              "destinationAddressPrefix": "AzureCloud",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AllowBastionHostCommunicationOutBound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationPortRanges": [
+                "8080",
+                "5701"
+              ],
+              "destinationAddressPrefix": "VirtualNetwork",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "AllowGetSessionInformationOutBound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "Internet",
+              "destinationPortRanges": [
+                "80",
+                "443"
+              ],
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "DenyAllOutBound",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 1000,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2022-11-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
-      ],
+      "apiVersion": "2022-07-01",
+      "name": "[variables('OnPremVNETName')]",
+      "location": "[parameters('location')]",
       "tags": {
         "Purpose": "LabDeployment"
       },
@@ -89,38 +255,90 @@
             "properties": {
               "addressPrefix": "[variables('OnPremVNETSubnet1Prefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('HyperVHost_NSG_Name'))]"
+              }
+            }
+          },
+          {
+            "name": "[variables('OnPremVNETBastionSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('OnPremVNETBastionSubnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BastionNsgName'))]"
               }
             }
           }
         ]
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BastionNsgName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('HyperVHost_NSG_Name'))]"
+      ]
     },
     {
-      "name": "[variables('HyperVHost-PUBIPName')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "location": "[resourceGroup().location]",
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'existing')]",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2022-07-01",
-      "dependsOn": [],
+      "name": "[format('{0}/{1}', variables('OnPremVNETName'), variables('OnPremVNETBastionSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[variables('OnPremVNETBastionSubnetPrefix')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BastionNsgName'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BastionNsgName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2022-07-01",
+      "name": "[variables('Bastion_PUBIPName')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "location": "[parameters('location')]",
       "tags": {
         "Purpose": "LabDeployment"
       },
       "properties": {
-        "publicIPAllocationMethod": "Dynamic",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('hypervHostDnsName')]"
+          "domainNameLabel": "[variables('BastionHostName')]"
         }
       }
     },
     {
-      "name": "[variables('HyperVHostNicName')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/bastionHosts",
       "apiVersion": "2022-07-01",
+      "name": "[variables('BastionHostName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "IpConf",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('OnPremVNETName'), variables('OnPremVNETBastionSubnetName'))]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('Bastion_PUBIPName'))]"
+              }
+            }
+          }
+        ]
+      },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'OnPremVNET')]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
-      ],
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('Bastion_PUBIPName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPremVNETName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('OnPremVNETName'), variables('OnPremVNETBastionSubnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-07-01",
+      "name": "[variables('HyperVHostNicName')]",
+      "location": "[parameters('location')]",
       "tags": {
         "Purpose": "LabDeployment"
       },
@@ -131,27 +349,25 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[variables('HyperVHostSubnetRef')]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('HyperVHost-PUBIPName'))]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('OnPremVNETName'), variables('OnPremVNETSubnet1Name'))]"
               }
             }
           }
         ],
         "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('HyperVHost-NSG'))]"
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('HyperVHost_NSG_Name'))]"
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('HyperVHost_NSG_Name'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPremVNETName'))]"
+      ]
     },
     {
-      "name": "[variables('HyperVHostName')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "location": "[resourceGroup().location]",
       "apiVersion": "2022-11-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]"
-      ],
+      "name": "[variables('HyperVHostName')]",
+      "location": "[parameters('location')]",
       "tags": {
         "Purpose": "LabDeployment"
       },
@@ -161,7 +377,7 @@
         },
         "osProfile": {
           "computerName": "[variables('HyperVHostName')]",
-          "adminUsername": "[parameters('HyperVHostAdminUsername')]",
+          "adminUsername": "[parameters('HyperVHostAdminUserName')]",
           "adminPassword": "[parameters('HyperVHostAdminPassword')]"
         },
         "storageProfile": {
@@ -184,62 +400,63 @@
           ]
         }
       },
-      "resources": [
-        {
-          "name": "InstallHyperV",
-          "type": "extensions",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2022-11-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('HyperVHostNicName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPremVNETName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2022-11-01",
+      "name": "[format('{0}/{1}', variables('HyperVHostName'), 'InstallHyperV')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "Install Hyper-V"
+      },
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.4",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[variables('HyperVHostInstallHyperVURL')]"
           ],
-          "tags": {
-            "displayName": "Install Hyper-V"
+          "commandToExecute": "[format('powershell -ExecutionPolicy Unrestricted -File {0}/{1}', variables('HyperVHostInstallHyperVScriptFolder'), variables('HyperVHostInstallHyperVScriptFileName'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2022-11-01",
+      "name": "[format('{0}/{1}', variables('HyperVHostName'), 'HyperVHostConfig')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "HyperVHostConfig"
+      },
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.9",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "configuration": {
+            "url": "[concat(variables('HyperVHostConfigURL'))]",
+            "script": "HyperVHostConfig.ps1",
+            "function": "Main"
           },
-          "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.4",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "fileUris": [
-                "[variables('HyperVHostInstallHyperVURL')]"
-              ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('HyperVHostInstallHyperVScriptFolder'), '/', variables('HyperVHostInstallHyperVScriptFileName'))]"
-            }
-          }
-        },
-        {
-          "name": "HyperVHostConfig",
-          "type": "extensions",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2022-11-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
-            "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
-          ],
-          "tags": {
-            "displayName": "HyperVHostConfig"
-          },
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "typeHandlerVersion": "2.9",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "configuration": {
-                "url": "[concat(variables('HyperVHostConfigURL'))]",
-                "script": "HyperVHostConfig.ps1",
-                "function": "Main"
-              },
-              "configurationArguments": {
-                "nodeName": "[variables('HyperVHostName')]"
-              }
-            }
+          "configurationArguments": {
+            "nodeName": "[variables('HyperVHostName')]"
           }
         }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
+        "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
       ]
     }
-  ],
-  "outputs": {}
+  ]
 }
