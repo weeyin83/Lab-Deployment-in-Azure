@@ -19,12 +19,15 @@ $ResourceGroupName = "AzureLab"
 $Location = "uksouth"
 $BicepDeploymentName = "AzureLabDeployment"
 $DNSName = "AzureLab"
+$HyperVHostAdminUserName = "adminuser"
+$HyperVHostAdminPassword = ConvertTo-SecureString -AsPlainText -Force "demo@password123"
+$vnetNeworExisting = "new"
 
 ## Create an Azure Resource Group
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 
 ## Deploy the Azure Lab using Bicep
-New-AzResourceGroupDeployment -name $BicepDeploymentName -ResourceGroupName $ResourceGroupName -TemplateFile VMdeploy.bicep -hypervHostDnsName $DNSName
+New-AzResourceGroupDeployment -name $BicepDeploymentName -ResourceGroupName $ResourceGroupName -TemplateFile VMdeploy.bicep -HyperVHostAdminUserName $HyperVHostAdminUserName -HyperVHostAdminPassword $HyperVHostAdminPassword -vnetNeworExisting $vnetNeworExisting
 ```
 
 _It can take 50-70 minutes for the lab to fully deploy._
