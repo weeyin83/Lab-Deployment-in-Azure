@@ -50,7 +50,7 @@ The servers are all joined to the domain **tailwindtraders.org**. The login name
 | WEB01  | Windows Server 2016   | Web front end server  |   1 | 2GB | IIS is installed on this server.  If you browse to the IP address of this server from any other server on the network you will get a small HR database website.  The website queries the database installed on SQL01. This is part of the work from the following website: [https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/](https://www.mssqltips.com/sqlservertip/7461/developing-a-web-application-with-aspnet-and-sql-server/) |
 | WEB02  | Ubuntu Server 22.04.2   | Future web front end server |   1 | 2GB | The IP address on this server should be statically set. This is domain joined and has Apache2 installed.  You can browse to the website http://192.168.0.24 from another computer on the network and view the default Apache2 page. |
 
-FS01, SQL01, WEB01 and WEB02 were all patched at the start of March 2023.  AD01 wouldn't patch. 
+FS01, SQL01, WEB01 and WEB02 were all patched at the start of March 2023.  Patches for AD01 are no longer available without an Extended Security Update (ESU) agreement. 
 
 The AD01 server is the domain controller, DHCP and DNS server.  It should give out IP addresses to the servers when imported, but if you have any issues there are details on how to set static IPs to them below. 
 
