@@ -24,6 +24,7 @@ Once the Azure deployment has completed, there are a few things you need to do w
     - Preferred DNS: 127.0.0.1
     - Alternative DNS: 8.8.8.8
 * For the other servers configure the IP addresses as follows:
+
 |  VM Name  | IP Address   | Subnet   |  Default Gateway | Preferred DNS | Alternative DNS |
 |---|---|---|---|---|---|
 |  AD01 |  192.168.0.2 | 255.255.255.0   |  192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
@@ -82,9 +83,8 @@ We need to build a server that can host the Azure Migrate software within our en
 ### Create an Azure Migrate project
 _For the purpose of this lab environment we're going to assume that AS01, FS01, SQL01, WEB01 and WEB02 are all physical servers._
 
-* In the Azure portal > All services, search for Azure Migrate
-* Under Services, select Azure Migrate
-* In Overview, select Create project
+* In the Azure portal > All services, search for **Azure Migrate**
+* In Overview, select **Create project**
 * In Create project, select your Azure subscription and resource group. Create a resource group if you don't have one
 * In Project Details, specify the project name and the geography in which you want to create the project
 * Select Create
@@ -92,15 +92,15 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * On the Discover screen ensure you select **Physical or other** from the type of servers you are discovering
 * Input a name for your appliance and select **Generate Key**, make sure you don't leave this page until the key is generated
 * Take a copy of your project key and store it somewhere safe, you need this later on
-* Next you need to download the Azure Migrate appliance, download the .zip file as displayed onto the server you have just built
+* Next you need to download the Azure Migrate appliance.  Displayed on the page should be a download button, ensure you  download the .zip file as displayed onto the server you have just built.
 
 ### Install the Azure Migrate appliance
-* Once the .zip file has downloaded, be sure to unzip it before carrying on
-* The first step you can carry out to verify the security of the file downloaded.  Official information can be found [here](https://learn.microsoft.com/azure/migrate/tutorial-discover-physical#verify-security)
-* Launch PowerShell on the server with administrative (elevated) privilege
+* Once the .zip file has downloaded, be sure to **unzip** it before carrying on
+* You can follow the official documentation to verify the security of the file you have just downloaded.  The steps and verification process can be found [here](https://learn.microsoft.com/azure/migrate/tutorial-discover-physical#verify-security)
+* Launch **PowerShell** on the server with administrative (elevated) privilege
 * Change the PowerShell directory to the folder where the contents have been extracted from the downloaded zipped file
 * Run the command **.\AzureMigrateInstaller.ps1**
-* Select from the scenario, cloud, and connectivity options to deploy an appliance with the desired configuration. Within this example you want to select:
+* You will be prompted to answer certain questions. Within this example you want to select:
       - Physical Servers
       - Azure Public cloud
       - Default (public endpoint)
@@ -116,5 +116,5 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * After the script has executed successfully, the appliance configuration manager will be launched automatically.
 
 ### Configure the Azure Migrate appliance
-* Double click on the Azure Migrate appliance that is installed on your desktop
-* Accept the license terms, and read the third-party information
+* Double click on the **Azure Migrate appliance icon** that is installed on your desktop
+* **Accept the license terms**, and read the third-party information
