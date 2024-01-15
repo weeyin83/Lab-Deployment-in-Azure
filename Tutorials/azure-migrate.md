@@ -40,7 +40,7 @@ We need to build a server that can host the Azure Migrate software within our en
 * You will be asked to provide some information on the server:
     * Name
     * Generation: Specify Generation 1
-    * Memory: Assign at least 8GB of memory
+    * Memory: Assign at least 16GB of memory
     * Networking: Select
     * Hard Disk: Specify at least 80GB
     * Select the Windows Server 2022 ISO for the operation system
@@ -66,7 +66,9 @@ We need to build a server that can host the Azure Migrate software within our en
     - Preferred DNS: 192.168.0.2
     - Alternative DNS: 8.8.8.8
 
+
 ### Create an Azure Migrate project
+_For the purpose of this lab environment we're going to assume that AS01, FS01, SQL01, WEB01 and WEB02 are all physical servers._
 
 * In the Azure portal > All services, search for Azure Migrate
 * Under Services, select Azure Migrate
@@ -74,3 +76,10 @@ We need to build a server that can host the Azure Migrate software within our en
 * In Create project, select your Azure subscription and resource group. Create a resource group if you don't have one
 * In Project Details, specify the project name and the geography in which you want to create the project
 * Select Create
+* When the Azure Migrate project creates, you can now start to deploy the Azure Migrate appliance.  To do this select **Discover** under Azure Migrate: Discovery and Assessment
+* On the Discover screen ensure you select **Physical or other** from the type of servers you are discovering
+* Input a name for your appliance and select **Generate Key**, make sure you don't leave this page until the key is generated
+* Take a copy of your project key and store it somewhere safe, you need this later on
+* Next you need to download the Azure Migrate appliance, download the .zip file as displayed onto the server you have just built
+
+### Install the Azure Migrate appliance
