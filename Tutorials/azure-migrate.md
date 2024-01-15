@@ -33,7 +33,7 @@ We are going to deploy Azure Migrate within our lab environment to assess the se
 
 We need to build a server that can host the Azure Migrate software within our environment.  
 
-* Obtain an ISO for Windows Server 2016 and store it within your Azure VM
+* Obtain an ISO for Windows Server 2022 and store it within your Azure VM
 * Open **Hyper-V Manager** within your Azure VM
 * From the **Action** pane, click **New**, and then click **Virtual Machine**
 * From the **New Virtual Machine Wizard**, click **Next**
@@ -43,8 +43,28 @@ We need to build a server that can host the Azure Migrate software within our en
     * Memory: Assign at least 8GB of memory
     * Networking: Select
     * Hard Disk: Specify at least 80GB
-    * Select the Windows Server 2016 ISO for the operation system
+    * Select the Windows Server 2022 ISO for the operation system
 * After verifying your choices in the **Summary** page, click **Finish**
+* Once the VM is created, within the **Hyper-V Manager** tool, right click on the new VM
+* Select **Settings**
+* Ensure 8 virtual processors are assigned to the VM
+* Click **OK**
+* Now right click on the VM and select **Start**
+* Walk through the process of installing the operating system
+* When the VM has installed the operating system, we need to configure some settings within the VM
+* Within the **Server Manager** click on **Local Server**
+* Click on the **Computer Name** and give the server an appropriate name, click **OK** and restart the server
+* When the VM restarts, within the **Server Manager** click on **Local Server**
+* Click on the **IE Enchanced Security Configuration** setting and ensure it is turned off
+* Now click on the **Ethernet** setting to launch the networking configuration window
+* Right click on the network adapter and select **Properties**
+* Click on **Internet Protocol Version 4 (TCP/IPv4)** and select **Properties**
+* Configure the IP address to a static one, the configuration should be: 
+    - IP Address: 192.168.0.7
+    - Subnet Mask: 255.255.255.0
+    - Default Gateway: 192.168.0.1
+    - Preferred DNS: 192.168.0.2
+    - Alternative DNS: 8.8.8.8
 
 ### Create an Azure Migrate project
 
