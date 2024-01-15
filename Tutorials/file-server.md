@@ -57,7 +57,15 @@ Once the Azure deployment has completed, there are a few things you need to do w
     - Default Gateway: 192.168.0.1
     - Preferred DNS: 127.0.0.1
     - Alternative DNS: 8.8.8.8
-* Restart the 4 other servers hosted within the Hyper-V environment _(Restarting them will force them all to pick up an IP address from the AD01 server)_
+* For the other servers configure the IP addresses as follows:
+
+|  VM Name  | IP Address   | Subnet   |  Default Gateway | Preferred DNS | Alternative DNS |
+|---|---|---|---|---|---|
+|  AD01 |  192.168.0.2 | 255.255.255.0   |  192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
+|  FS01 | 192.168.0.3   | 255.255.255.0  |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
+| SQL01  | 192.168.0.4   | 255.255.255.0  |  192.168.0.1 | 192.168.0.2 | 8.8.8.8  |
+| WEB01  | 192.168.0.5   | 255.255.255.0  |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
+| WEB02  | 192.168.0.6   | 255.255.255.0 |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
 
 
 ## Configure the Azure File Share
