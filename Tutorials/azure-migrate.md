@@ -65,6 +65,10 @@ We need to build a server that can host the Azure Migrate software within our en
     - Default Gateway: 192.168.0.1
     - Preferred DNS: 192.168.0.2
     - Alternative DNS: 8.8.8.8
+* When the server restarts ithin the **Server Manager** click on **Local Server**
+* Click on **Workgroup**
+* You want to join the server to the **tailwindtraders** domain
+* Restart the server as prompted
 
 
 ### Create an Azure Migrate project
