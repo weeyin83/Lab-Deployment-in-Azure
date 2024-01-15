@@ -135,6 +135,8 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * The next step is to **Login**.  When you click on that button it will generate a Device Code you can use to log into the Azure portal via [https://aka.ms/devicelogin](https://aka.ms/devicelogin)
 * Once you confirm your credentials it will take up to 10minutes to complete the registration process.  Once this is completed we can move onto the next step. 
 
+![Azure Migrate application registration](images/azure-migrate-registration.png)
+
 
 ### Configure the Azure Migrate appliance - Manage credentials and discovery sources
 
