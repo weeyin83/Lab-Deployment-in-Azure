@@ -133,6 +133,7 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * The first manual step you have is to paste in the key that you got earlier from the Azure portal when you were creating the Azure Migrate project.  Once you input the key, click **verify**. 
 * The Azure Migrate appliance will verify the key and also check for any updates to the appliance.  It's worth while giving this 5-10minutes to run before trying to move on. 
 * The next step is to **Login**.  When you click on that button it will generate a Device Code you can use to log into the Azure portal via [https://aka.ms/devicelogin](https://aka.ms/devicelogin)
+* Once you confirm your credentials it will take up to 10minutes to complete the registration process.  Once this is completed we can move onto the next step. 
 
 
 ### Configure the Azure Migrate appliance - Manage credentials and discovery sources
