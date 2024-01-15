@@ -116,5 +116,5 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * After the script has executed successfully, the appliance configuration manager will be launched automatically.
 
 ### Configure the Azure Migrate appliance
-* Open a browser on the server and browse to the the URL **https://192.168.0.7:44368**
+* Double click on the Azure Migrate appliance that is installed on your desktop
 * Accept the license terms, and read the third-party information
