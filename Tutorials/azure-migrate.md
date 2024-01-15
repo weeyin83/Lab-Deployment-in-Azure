@@ -10,6 +10,15 @@ The first that that you need to do is deploy the Azure virtual machine (VM) that
 
 _It can take 50-70 minutes for the lab to fully deploy._
 
+# Table of contents
+
+- [Set up the lab](#set-up-the-lab)
+- [Build a server to install Azure Migrate on](#discover-with-azure-migrate)
+- [Create an Azure Migrate project](#create-an-azure-migrate-project)
+- [Install the Azure Migrate appliance](#install-the-azure-migrate-appliance)
+- [Configure the Azure Migrate appliance - Azure connection](#configure-the-azure-migrate-appliance---azure-connection)
+- [Configure the Azure Migrate appliance - Manage credentials and discovery sources](#configure-the-azure-migrate-appliance---manage-credentials-and-discovery-sources)
+
 ## Set up the lab
 
 Once the Azure deployment has completed, there are a few things you need to do within the lab before you can start using it. 
@@ -115,6 +124,19 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 
 * After the script has executed successfully, the appliance configuration manager will be launched automatically.
 
-### Configure the Azure Migrate appliance
+### Configure the Azure Migrate appliance - Azure connection
+
 * Double click on the **Azure Migrate appliance icon** that is installed on your desktop
 * **Accept the license terms**, and read the third-party information
+* The Appliance will check it has internet access and connect with the Azure portal, you have the option to add a proxy configuration here if needed
+* The Appliance will then check the time with the server and the Internet
+* The first manual step you have is to paste in the key that you got earlier from the Azure portal when you were creating the Azure Migrate project.  Once you input the key, click **verify**. 
+* The Azure Migrate appliance will verify the key and also check for any updates to the appliance.  It's worth while giving this 5-10minutes to run before trying to move on. 
+* The next step is to **Login**.  When you click on that button it will generate a Device Code you can use to log into the Azure portal via [https://aka.ms/devicelogin](https://aka.ms/devicelogin)
+
+
+### Configure the Azure Migrate appliance - Manage credentials and discovery sources
+
+Now that the Azure Migrate appliance is connected to your Azure Migrate project within Azure it's time to tell it how and where to look for servers and start to gather information about your environment. 
+
+_It's worth noting we are going through the process of discovering physical servers, the process will be different when trying to discover a Hyper-V or VMware environment._
