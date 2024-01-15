@@ -87,3 +87,26 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 * Next you need to download the Azure Migrate appliance, download the .zip file as displayed onto the server you have just built
 
 ### Install the Azure Migrate appliance
+* Once the .zip file has downloaded, be sure to unzip it before carrying on
+* The first step you can carry out to verify the security of the file downloaded.  Official information can be found [here](https://learn.microsoft.com/azure/migrate/tutorial-discover-physical#verify-security)
+* Launch PowerShell on the server with administrative (elevated) privilege
+* Change the PowerShell directory to the folder where the contents have been extracted from the downloaded zipped file
+* Run the command **.\AzureMigrateInstaller.ps1**
+* Select from the scenario, cloud, and connectivity options to deploy an appliance with the desired configuration. Within this example you want to select:
+      - Physical Servers
+      - Azure Public cloud
+      - Default (public endpoint)
+* The installer script does the following:
+    - Installs agents and a web application.
+    - Installs Windows roles, including Windows Activation Service, IIS, and PowerShell ISE.
+    - Downloads and installs an IIS rewritable module.
+    - Updates a registry key (HKLM) with persistent setting details for Azure Migrate.
+    - Creates the following files under the path:
+        - Config Files: %ProgramData%\Microsoft Azure\Config
+        - Log Files: %ProgramData%\Microsoft Azure\Logs
+
+* After the script has executed successfully, the appliance configuration manager will be launched automatically.
+
+### Configure the Azure Migrate appliance
+* Open a browser on the server and browse to the the URL **https://192.168.0.7:44368**
+* Accept the license terms, and read the third-party information
