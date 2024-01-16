@@ -2,7 +2,7 @@
 
 ## Deploy the Azure lab
 
-The first that that you need to do is deploy the Azure virtual machine (VM) that will act as your on-prem environment.  You can start the deployment via the following button: 
+The first thing that you need to do is deploy the Azure virtual machine (VM) that will act as your on-prem environment.  You can start the deployment via the following button: 
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fweeyin83%2FLab-Deployment-in-Azure%2Fmain%2FVMdeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -14,6 +14,7 @@ _It can take 50-70 minutes for the lab to fully deploy._
 
 - [Set up the lab](#set-up-the-lab)
 - [Build a server to install Azure Migrate on](#discover-with-azure-migrate)
+- [Configure remote access on servers](#configure-remote-access-on-servers)
 - [Create an Azure Migrate project](#create-an-azure-migrate-project)
 - [Install the Azure Migrate appliance](#install-the-azure-migrate-appliance)
 - [Configure the Azure Migrate appliance - Azure connection](#configure-the-azure-migrate-appliance---azure-connection)
@@ -25,14 +26,14 @@ Once the Azure deployment has completed, there are a few things you need to do w
 
 * Log onto your Azure VM
 * Launch Hyper-V
-* Log onto AD01, the login name is **tailwindtraders\administrator** and the password is: **Password**: demo@pass123 
+* Log onto AD01, the login name is **tailwindtraders\administrator** and the password is: demo@pass123 
 * Configure the IP address to a static one, the configuration should be: 
     - IP Address: 192.168.0.2
     - Subnet Mask: 255.255.255.0
     - Default Gateway: 192.168.0.1
     - Preferred DNS: 127.0.0.1
     - Alternative DNS: 8.8.8.8
-* For the other servers configure the IP addresses as follows:
+* For the other winodws servers configure the IP addresses as follows:
 
 |  VM Name  | IP Address   | Subnet   |  Default Gateway | Preferred DNS | Alternative DNS |
 |---|---|---|---|---|---|
@@ -40,7 +41,7 @@ Once the Azure deployment has completed, there are a few things you need to do w
 |  FS01 | 192.168.0.3   | 255.255.255.0  |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
 | SQL01  | 192.168.0.4   | 255.255.255.0  |  192.168.0.1 | 192.168.0.2 | 8.8.8.8  |
 | WEB01  | 192.168.0.5   | 255.255.255.0  |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
-| WEB02  | 192.168.0.6   | 255.255.255.0 |   192.168.0.1 | 192.168.0.2 | 8.8.8.8 |
+* Log onto the Hyper-V Manager, right click on WEB02 and select **Delete** _This lab currently doesn't work using this Linux server._
 
 
 ## Discover with Azure Migrate
@@ -87,6 +88,14 @@ We need to build a server that can host the Azure Migrate software within our en
 * Click on **Workgroup**
 * You want to join the server to the **tailwindtraders** domain
 * Restart the server as prompted
+
+## Configure remote access on servers
+
+_We need to ensure that Azure Migrate can access the servers through WinRM for the Windows Servers._
+
+* Log onto each of the Windows servers (AD01, FS01, SQL01, WEB01) and run the following commands:
+    - Enable-PSRemoting -Force
+    - winrm quickconfig
 
 
 ### Create an Azure Migrate project
@@ -143,3 +152,34 @@ _For the purpose of this lab environment we're going to assume that AS01, FS01, 
 Now that the Azure Migrate appliance is connected to your Azure Migrate project within Azure it's time to tell it how and where to look for servers and start to gather information about your environment. 
 
 _It's worth noting we are going through the process of discovering physical servers, the process will be different when trying to discover a Hyper-V or VMware environment._
+
+We need to add credentials that have rights to be able to discover the servers. _Within a production environment you would set up a specific account to do the discovery with the minimum required permissions, but in this lab environment we are going to use the global admin account for simplicity._
+
+* Click on **Add Credentials**
+* Within the pop up box enter
+    - Source Type: Windows Server
+    - Friendly Name: windowsadmin
+    - Username: tailwindtraders\administrator
+    - Password: demo@pass123 _If you've changed the default password for this lab be sure to add it._
+* Click on **Save**
+* Click on **Add discovery source**
+* Select **Add multiple items**
+* Within the text box enter: 
+    - 192.168.0.2, windowsadmin
+    - 192.168.0.3, windowsadmin
+    - 192.168.0.4, windowsadmin
+    - 192.168.0.5, windowsadmin
+* Click on **verify**
+_If you receive any errors, try and discover the server with it's name rather than IP address._
+* Once the servers have validated we can can configure the Azure Migrate appliance to do SQL server discovery. 
+* Click on **Add Credentials**
+* Within the pop up box enter
+    - Credentials type: Domain Credentials
+    - Friendly Name: sqladmin
+    - Domain name: tailwindtraders.org
+    - Username: administrator
+    - Password: demo@pass123 _If you've changed the default password for this lab be sure to add it._
+* You are now ready to start the discovery, click on **Start Discovery**
+_You may be asked to log into Azure again at this point._
+
+🕛 **It's best to leave the discovery for at least 24 hours.**
