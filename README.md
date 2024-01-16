@@ -116,6 +116,7 @@ Some tutorials on how to use this lab have been created:
 
 * [Lab deployment steps](Tutorials/lab-deployment.md)
 * [Use Azure File Shares with the lab](Tutorials/file-server.md)
+* [Set up an Azure Migrate appliance and walk through discovering servers](Tutorials/azure-migrate.md)
 
 
 ## Credits
