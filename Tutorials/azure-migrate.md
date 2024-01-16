@@ -182,4 +182,4 @@ _If you receive any errors, try and discover the server with it's name rather th
 * You are now ready to start the discovery, click on **Start Discovery**
 _You may be asked to log into Azure again at this point._
 
-🕛 **It's best to leave the discovery for at least 24 hours.**
+🕛 **When you click on the start discovery button it will give you an assessment as to how long it will take for the server information to appear in the portal.**
