@@ -84,3 +84,10 @@ When you start the virtual machine it will automatically start the install of th
     - SSH Setup, select the installation of OpenSSH server
     - Server features, you can select any additional packages you may want or skip this step
 
+Once the operating system install has completed you will be asked to reboot the server.  Before you do that remove the installation media. 
+
+* Open Hyper-V Manager
+* Right click on your virutal machine and select **Settings**
+* Remove the media from the DVD drive and select **OK**
+
+You can now safely reboot the server. 

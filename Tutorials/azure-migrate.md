@@ -52,7 +52,7 @@ We are going to deploy Azure Migrate within our lab environment to assess the se
 
 We need to build a server that can host the Azure Migrate software within our environment.  
 
-* Obtain an ISO for Windows Server 2022 and store it within your Azure VM
+* Obtain an ISO for Windows Server 2022 and store it within your Azure VM - if you have an MSDN subscription you can download the ISO from [https://my.visualstudio.com/](https://my.visualstudio.com/)
 * Open **Hyper-V Manager** within your Azure VM
 * From the **Action** pane, click **New**, and then click **Virtual Machine**
 * From the **New Virtual Machine Wizard**, click **Next**
@@ -183,3 +183,5 @@ _If you receive any errors, try and discover the server with it's name rather th
 _You may be asked to log into Azure again at this point._
 
 🕛 **When you click on the start discovery button it will give you an assessment as to how long it will take for the server information to appear in the portal.**
+
+💡 **Once the servers have been discovered, you can enable Dependency Analysis within the Azure Portal following this guide: [Configure Azure Migrate to do dependency analysis on your servers](azure-migrate-dependencies.md)**
