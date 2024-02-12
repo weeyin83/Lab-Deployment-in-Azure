@@ -52,7 +52,7 @@ We are going to deploy Azure Migrate within our lab environment to assess the se
 
 We need to build a server that can host the Azure Migrate software within our environment.  
 
-* Obtain an ISO for Windows Server 2022 and store it within your Azure VM - if you have an MSDN subscription you can download the ISO from [https://my.visualstudio.com/](https://my.visualstudio.com/)
+* Obtain an ISO for Windows Server 2022 and store it within your Azure VM - if you have an MSDN subscription you can download the ISO from [https://my.visualstudio.com/](https://my.visualstudio.com/).  Alternatively you can download an evaluation copy from [https://www.microsoft.com/evalcenter/download-windows-server-2022](https://www.microsoft.com/evalcenter/download-windows-server-2022).
 * Open **Hyper-V Manager** within your Azure VM
 * From the **Action** pane, click **New**, and then click **Virtual Machine**
 * From the **New Virtual Machine Wizard**, click **Next**
