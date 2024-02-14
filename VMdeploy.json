@@ -17,6 +17,10 @@
       "type": "securestring",
       "minLength": 8
     },
+    "HyperVHostName": {
+      "type": "string",
+      "defaultValue": "hypervhost-updateme"
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
@@ -39,15 +43,14 @@
     "OnPremVNETSubnet1Prefix": "10.0.0.0/24",
     "OnPremVNETBastionSubnetName": "AzureBastionSubnet",
     "OnPremVNETBastionSubnetPrefix": "10.0.1.0/24",
-    "HyperVHostName": "hypervhost",
     "HyperVHostImagePublisher": "MicrosoftWindowsServer",
     "HyperVHostImageOffer": "WindowsServer",
     "HyperVHostWindowsOSVersion": "2022-Datacenter",
     "HyperVHostVmSize": "Standard_D8s_v3",
-    "HyperVHost_NSG_Name": "[format('{0}-NSG', variables('HyperVHostName'))]",
-    "HyperVHostNicName": "[format('{0}-NIC', variables('HyperVHostName'))]",
+    "HyperVHost_NSG_Name": "[format('{0}-NSG', parameters('HyperVHostName'))]",
+    "HyperVHostNicName": "[format('{0}-NIC', parameters('HyperVHostName'))]",
     "BastionNsgName": "[format('{0}-NSG', variables('BastionHostName'))]",
-    "BastionHostName": "[format('{0}-bastion', variables('HyperVHostName'))]",
+    "BastionHostName": "[format('{0}-bastion', parameters('HyperVHostName'))]",
     "Bastion_PUBIPName": "[format('{0}-PIP', variables('BastionHostName'))]",
     "HyperVHostConfigURL": "https://github.com/weeyin83/Lab-Deployment-in-Azure/blob/main/HyperVHostConfig.zip?raw=true",
     "HyperVHostInstallHyperVScriptFolder": ".",
@@ -366,7 +369,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2022-11-01",
-      "name": "[variables('HyperVHostName')]",
+      "name": "[parameters('HyperVHostName')]",
       "location": "[parameters('location')]",
       "tags": {
         "Purpose": "LabDeployment"
@@ -376,7 +379,7 @@
           "vmSize": "[variables('HyperVHostVmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('HyperVHostName')]",
+          "computerName": "[parameters('HyperVHostName')]",
           "adminUsername": "[parameters('HyperVHostAdminUserName')]",
           "adminPassword": "[parameters('HyperVHostAdminPassword')]"
         },
@@ -408,7 +411,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2022-11-01",
-      "name": "[format('{0}/{1}', variables('HyperVHostName'), 'InstallHyperV')]",
+      "name": "[format('{0}/{1}', parameters('HyperVHostName'), 'InstallHyperV')]",
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "Install Hyper-V"
@@ -426,13 +429,13 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]"
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('HyperVHostName'))]"
       ]
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2022-11-01",
-      "name": "[format('{0}/{1}', variables('HyperVHostName'), 'HyperVHostConfig')]",
+      "name": "[format('{0}/{1}', parameters('HyperVHostName'), 'HyperVHostConfig')]",
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "HyperVHostConfig"
@@ -449,13 +452,13 @@
             "function": "Main"
           },
           "configurationArguments": {
-            "nodeName": "[variables('HyperVHostName')]"
+            "nodeName": "[parameters('HyperVHostName')]"
           }
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('HyperVHostName'))]",
-        "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('HyperVHostName'), 'InstallHyperV')]"
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('HyperVHostName'))]",
+        "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('HyperVHostName'), 'InstallHyperV')]"
       ]
     }
   ]
