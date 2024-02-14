@@ -7,6 +7,8 @@ param HyperVHostAdminPassword string
 
 param location string = resourceGroup().location
 
+param HyperVHostName string = 'updateme'
+
 @description('Specify whether to provision new vnet or deploy to existing vnet')
 @allowed([
   'new'
@@ -20,7 +22,6 @@ var OnPremVNETSubnet1Name = 'VMHOST'
 var OnPremVNETSubnet1Prefix = '10.0.0.0/24'
 var OnPremVNETBastionSubnetName = 'AzureBastionSubnet'
 var OnPremVNETBastionSubnetPrefix = '10.0.1.0/24'
-var HyperVHostName = 'hypervhost'
 var HyperVHostImagePublisher = 'MicrosoftWindowsServer'
 var HyperVHostImageOffer = 'WindowsServer'
 var HyperVHostWindowsOSVersion = '2022-Datacenter'

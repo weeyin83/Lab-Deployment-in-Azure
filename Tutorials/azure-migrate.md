@@ -8,6 +8,26 @@ The first thing that you need to do is deploy the Azure virtual machine (VM) tha
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
+Alternatively if you would like to deploy the lab using Azure Bicep you can clone the repo and deploy the template using the following Azure PowerShell commands: 
+
+```powershell
+
+## Create variables - modify these to suit your deployment needs
+$ResourceGroupName = "AzureLab"
+$Location = "uksouth"
+$BicepDeploymentName = "AzureLabDeployment"
+$HyperVHostName = "updateme"
+$HyperVHostAdminUserName = "adminuser"
+$HyperVHostAdminPassword = ConvertTo-SecureString -AsPlainText -Force "demo@password123"
+$vnetNeworExisting = "new"
+
+## Create an Azure Resource Group
+New-AzResourceGroup -Name $ResourceGroupName -Location $Location
+
+## Deploy the Azure Lab using Bicep
+New-AzResourceGroupDeployment -name $BicepDeploymentName -ResourceGroupName $ResourceGroupName -TemplateFile VMdeploy.bicep -HyperVHostAdminUserName $HyperVHostAdminUserName -HyperVHostAdminPassword $HyperVHostAdminPassword -vnetNeworExisting $vnetNeworExisting -HyperVHostName $HyperVHostName
+```
+
 _It can take 50-70 minutes for the lab to fully deploy._
 
 # Table of contents
