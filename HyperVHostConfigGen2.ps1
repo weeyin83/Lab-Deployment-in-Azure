@@ -55,13 +55,18 @@ Configuration Main
 				$zipDownload = "https://techielassblogstorage.blob.core.windows.net/azurelab/gen2.zip"
 				$downloadedFile = "D:\HyperVLabVMs.zip"
 				$vmFolder = "C:\VM"
+                New-Item -Path 'D:\' -Name 'folderscreated.txt' -ItemType 'file'
 				Resize-Partition -DiskNumber 0 -PartitionNumber 2 -Size (400GB)
+                New-Item -Path 'D:\' -Name 'partitiondone.txt' -ItemType 'file'
 				Invoke-WebRequest $zipDownload -OutFile $downloadedFile
+                New-Item -Path 'D:\' -Name 'downloadstarted.txt' -ItemType 'file'
 				Add-Type -assembly "system.io.compression.filesystem"
 				[io.compression.zipfile]::ExtractToDirectory($downloadedFile, $vmFolder)
+                New-Item -Path 'D:\' -Name 'unzippingcompleted.txt' -ItemType 'file'
 				$NatSwitch = Get-NetAdapter -Name "vEthernet (NatSwitch)"
 				New-NetIPAddress -IPAddress 192.168.0.1 -PrefixLength 24 -InterfaceAlias $NatSwitch.Name
 				New-NetNat -Name NestedVMNATnetwork -InternalIPInterfaceAddressPrefix 192.168.0.0/24 -Verbose
+                New-Item -Path 'D:\' -Name 'networkcreated.txt' -ItemType 'file'
 				New-VM -Name AD01 `
 					-MemoryStartupBytes 2GB `
 					-BootDevice VHD `
